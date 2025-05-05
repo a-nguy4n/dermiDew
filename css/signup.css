@@ -1,0 +1,83 @@
+@font-face{
+    font-family: "Slackside One";
+    src: url("/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    background-image: url("/assets/images/signupBackground.png");
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center center;
+    background-attachment: fixed; 
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+
+h1{
+    font-family: "Slackside One";
+    font-size: 5vw;
+    font-weight: 200;
+    color: white;
+    position: relative;
+    justify-self: center;
+
+}
+
+form{
+    justify-self: center;
+}
+
+label{
+    font-family: "Sarala Regular";
+    color: white;
+    justify-items: start;
+}
+
+input{
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    padding-right: 13rem;
+    margin-bottom: 1vw;
+}
+
+#signupButton{
+    font-family: "Sarala Regular";
+    color: white;
+    border: none;
+    border-radius: 10px;
+    background: #1B538B;
+    padding: 0.1vw 1vw;
+    margin-left: 20vw;
+}
+
+#linkLogin{
+    font-family: "Slackside One";
+    font-size: 1.3vw;
+    position: relative;
+    display: flex;
+    justify-self: center; 
+    align-items: center;
+    gap: 5px;
+    margin-right: 12vw;
+}
+
+p{
+    color: white;
+}
+
+a{
+    color: #1B538B;
+    text-decoration: none;
+}

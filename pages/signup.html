@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/signup.css">
+
     <title>Sign Up Page</title>
 </head>
 <body>
-    
+
     <h1> Sign Up </h1>
+
     <form>
         <label for="fNameSignUp"> First Name </label> <br>
         <input type="text" id="fNameSignUp" name="fNameSignUp"> <br>
@@ -24,11 +27,13 @@
         <label for="confirmPassword"> Confirm Password </label> <br>
         <input type="text" id="confirmPassword" name="confirmPassword"> <br>
    
-        <input type="submit" value="Sign Up">
+        <input id="signupButton" type="submit" value="Sign Up">
     </form>
 
-    <p> Have an account? </p>
-    <a href="/pages/login.html"> LOGIN </a>
-
+    <div id="linkLogin">
+        <p> Have an account? </p>
+        <a href="/pages/login.html"> LOGIN </a>
+    </div>
+   
 </body>
 </html>
