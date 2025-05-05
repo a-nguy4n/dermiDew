@@ -1,19 +1,19 @@
 @font-face{
     font-family: "Slackside One";
-    src: url("/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    src: url("/static/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face{
     font-family: "Sarala Regular";
-    src: url("/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
 }
 
-body {
-    background-image: url("/assets/images/signupBackground.png");
+body{
+    background-image: url("/static/assets/images/logInBackground.png");
     background-repeat: no-repeat;
     background-size: cover; 
     background-position: center center;
@@ -21,6 +21,11 @@ body {
     height: 100vh;
     margin: 0;
     overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -31,11 +36,15 @@ h1{
     color: white;
     position: relative;
     justify-self: center;
-
+    margin: none;
+    margin-top: -1.5rem;
 }
 
 form{
+    display: flex;
     justify-self: center;
+    flex-direction: column;
+    margin-top: -1.5rem;
 }
 
 label{
@@ -48,29 +57,29 @@ input{
     border: none;
     border-radius: 6px;
     padding: 0.75rem 1rem;
-    padding-right: 13rem;
+    padding-right: 10rem;
     margin-bottom: 1vw;
 }
 
-#signupButton{
+#loginButton{
     font-family: "Sarala Regular";
     color: white;
     border: none;
     border-radius: 10px;
-    background: #1B538B;
+    background: #5B4B0C;
     padding: 0.1vw 1vw;
-    margin-left: 20vw;
+    align-self: flex-end;
 }
 
-#linkLogin{
+#linkSignup{
     font-family: "Slackside One";
-    font-size: 1.3vw;
+    font-size: 1.5vw;
     position: relative;
     display: flex;
     justify-self: center; 
     align-items: center;
     gap: 5px;
-    margin-right: 12vw;
+    margin-top: -1.5rem;
 }
 
 p{
@@ -78,6 +87,6 @@ p{
 }
 
 a{
-    color: #1B538B;
+    color: #5B4B0C;
     text-decoration: none;
 }

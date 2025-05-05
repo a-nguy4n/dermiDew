@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/signup.css">
+
+    <title>Sign Up Page</title>
+</head>
+<body>
+
+    <h1> Sign Up </h1>
+
+    <form method="post" action="/signup">
+        <label for="firstname"> First Name </label> <br>
+        <input type="text" id="firstname" name="firstname"> <br>
+
+        <label for="lastname"> Last Name </label> <br>
+        <input type="text" id="lastname" name="lastname"> <br>
+
+        <label for="email"> Email </label> <br>
+        <input type="text" id="email" name="email"> <br>
+
+        <label for="passwordinput"> Password </label> <br>
+        <input type="text" id="passwordinput" name="passwordinput"> <br>
+
+        <label for="password"> Confirm Password </label> <br>
+        <input type="text" id="password" name="password"> <br>
+   
+        <input id="signupButton" type="submit" value="Sign Up">
+    </form>
+
+    <div id="linkLogin">
+        <p> Have an account? </p>
+        <a href="/static/pages/login.html"> LOGIN </a>
+    </div>
+   
+</body>
+</html>

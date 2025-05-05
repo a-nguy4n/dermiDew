@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/static/css/login.css">
 
     <title>Log In Page</title>
 </head>
 <body>
     <h1> Log In </h1>
-    <form>
-        <label for="emailLogin"> Email </label> <br>
-        <input type="text" id="emailLogin" name="emailLogin"> <br>
+    <form method="POST" action="/login">
+        <label for="email"> Email </label> <br>
+        <input type="text" id="email" name="email"> <br>
 
-        <label for="passwordLogin"> Password </label> <br>
-        <input type="text" id="passwordLogin" name="passwordLogin"> <br>
+        <label for="password"> Password </label> <br>
+        <input type="text" id="password" name="password"> <br>
    
         <input id="loginButton" type="submit" value="Log In">
     </form>
 
     <div id="linkSignup">
         <p> Don't have an account? </p>
-        <a href="/pages/signup.html"> SIGN UP </a>
+        <a href="/static/pages/signup.html"> SIGN UP </a>
     </div>
 </body>
 </html>
