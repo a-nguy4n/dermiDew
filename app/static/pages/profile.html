@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Profile Page </title>
+    <link rel="stylesheet" href="/app/static/assets/navbar/navbar.css">
+    <link rel="stylesheet" href="/app/static/css/profile.css">
+</head>
+
+<body>
+    
+    <div id="navbarContainer"></div>
+
+    <div class="profileContainer">
+       
+        <div class="profileColumnOne">
+            <img src="/app/static/assets/images/profilePic.png"  alt="User Profile Picture">
+            <h1> User Full Name </h1>
+            <p> userEmail@somegmail.com</p>
+            <p id="memberTime"> Member Since: date account created</p>
+        </div>
+
+        <div class="profileColumnTwo">
+            <div class="profileTabButtons">
+                <button class="tabButtonActive" data-display="Device"> My Device </button>
+                <button class="tabButton" data-display="SkinProfile"> Skin Profile </button>
+                <button class="tabButton" data-display="PastProducts"> Past Products </button>
+            </div>
+
+            <div class="tabContentActive" id="tabDevice">
+               <img src="/app/static/assets/images/imgPlaceholder.png" alt="Img Placeholder">
+               <section id="deviceInfo">
+                    <p> Device Name: </p>
+                    <p> Model: </p>
+                    <p> Connectivity Status: </p>
+               </section>
+            </div>
+
+            <div class="tabContent" id="tabSkinProfile">
+                <section id="skinTypeWrapper">
+                    <div id="skinTypeDisplay">
+                      <span id="skinTypeLabel"> Skin Type:  </span>
+                      <span id="skinTypeSummary"> None selected </span>
+                      <img id="editIcon" src="/app/static/assets/images/editIcon.png">
+                    </div>
+                  
+                    <div id="skinTypeEditor" style="display: none;">
+                      <label><input type="checkbox" value="Normal" name="skinType"> Normal</label>
+                      <label><input type="checkbox" value="Oily" name="skinType"> Oily</label>
+                      <label><input type="checkbox" value="Dry" name="skinType"> Dry</label>
+                      <label><input type="checkbox" value="Combination" name="skinType"> Combination</label>
+                      <label><input type="checkbox" value="Sensitive" name="skinType"> Sensitive</label>
+                      <button id="saveSkinType"> save</button>
+                    </div>
+                </section>
+                  
+                <section id="skinToneWrapper">
+                    <label for="skinToneSelect">Skin Tone:</label>
+                    <select id="skinToneSelect">
+                      <option>Select</option>
+                      <option>Fair</option>
+                      <option>Light</option>
+                      <option>Medium</option>
+                      <option>Olive</option>
+                      <option>Dark</option>
+                      <option>Deep</option>
+                    </select>
+                </section>
+                  
+                <section id="concernWrapper">
+                    <label for="concernInput">Skin Concerns:</label>
+                    <input type="text" id="concernInput" placeholder="Add a concern">
+                </section>
+                <div id="concernTags"></div>
+        
+                <section id="goalsWrapper">
+                    <label> Skin Goals: </label>
+                    <input type="text" id="goalInput" placeholder="Add a goal">
+                </section>
+                <div id="goalTags"></div>
+
+                <section id="allergyWrapper">
+                    <label> Allergies & Ingredient Sensitivities:</label> 
+                    <input type="text" id="alleryInput" placeholder="Add a allergen or sensitive ingredient">
+                </section>
+                <div id="allergyTags"></div>
+
+            </div>
+
+            <div class="tabContent" id="tabPastProducts">
+                <div id="productGrid">
+                    <div class="productCard">Product</div>
+                    <div class="productCard"></div>
+                    <div class="productCard"></div>
+                    <div class="productCard"></div>
+                    <div class="productCard"></div>
+                    <div class="productCard"></div>
+                    <!-- Add more cards dynamically or statically -->
+                  </div>
+            </div>
+        </div>
+    </div>
+
+<script src="/app/static/js/profile.js"></script>
+   
+</body>
+</html>
