@@ -1,0 +1,85 @@
+@font-face{
+    font-family: "Slackside One";
+    src: url("/app/static/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+nav{
+    font-family: "Slackside One";
+}
+
+nav .sections{
+    font-size: 2vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 3% 5%;
+    gap: 2.5vw;
+}
+
+nav a, nav span{         
+    text-decoration: none;
+    color: white;
+    background-color: #297BCE;  
+    padding: 0 1.5vw 0.5vw 1.5vw;
+    height: 3vw;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1;     
+}
+  
+nav a:hover,
+nav span:hover{
+    background-color: #88C3FF;
+}
+
+nav a.active,
+nav span.active{
+  background-color: #88C3FF !important;
+}
+  
+nav .dropdown{
+    position: relative;
+}
+
+#navHelp{
+    margin-bottom: 0.5vw;
+}
+
+nav .helpMenu{
+    display: none;
+    position: absolute;
+    top: 100%; 
+    left: 50%;  
+    transform: translateX(-50%);   
+    list-style: none;
+    padding: 0.5vw 1vw;
+    border-radius: 10px;
+    z-index: 100;
+    text-decoration: none;
+    font-size: 1.5vw;
+    color: white;
+    background-color: #60aaf4;
+}
+nav .helpMenu li{
+    line-height: 2.5;
+}
+
+
+nav .dropdown:hover .helpMenu{
+    display: block;
+}
+  
+#landingHelp a{
+    background-color: transparent !important;
+    padding: 0;
+    height: auto;
+    border-radius: 0;
+}
