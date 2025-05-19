@@ -294,5 +294,3 @@ async def upsert_skin_profile(user_id: int, skin_type: str, skin_tone: str, conc
         if connection and connection.is_connected():
             connection.close()
 
-
-

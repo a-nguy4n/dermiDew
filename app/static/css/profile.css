@@ -22,16 +22,13 @@ body {
   gap: 5%;
   margin: 3% 4% 5% 4%;
   min-height: 100vh;
-  align-items: stretch; /* Ensures both children are stretched */
+  align-items: stretch; 
 }
-
-
 
 .profileColumnOne,
 .profileColumnTwo {
-  align-self: start;     /* Let the grid stretch both columns equally */
+  align-self: start; 
 }
-
 
 /* Left Column */
 .profileColumnOne {
@@ -78,14 +75,11 @@ body {
   background-color: white;
 }
 
-
-
-
 .profileTabButtons {
   position: absolute;
   top: 0;
   left: 2vw;
-  transform: translateY(-35%); /* pull up enough to touch the border but not clip */
+  transform: translateY(-35%); 
   display: flex;
   gap: 1vw;
   z-index: 2;
@@ -141,8 +135,6 @@ body {
   margin-bottom: 0 !important;
 }
 
-
-
 /* Device Tab */
 #tabDevice.tabContentActive {
   display: flex;
@@ -170,17 +162,16 @@ body {
 #goalsWrapper,
 #allergyWrapper {
   display: grid;
-  grid-template-columns: 22vw auto;  /* Force label to fixed width */
+  grid-template-columns: 22vw auto; 
   align-items: center;
   margin-bottom: 2vw;
 }
-
 
 #skinToneWrapper label,
 #concernWrapper label,
 #goalsWrapper label,
 #allergyWrapper label {
-  width: 22vw;  /* Align all labels */
+  width: 22vw; 
   font-weight: 600;
   font-size: 1.5vw;
 }
@@ -188,12 +179,12 @@ body {
 /* Skin Type Display */
 #skinTypeWrapper {
   margin-bottom: 4vw;
-  display: block; /* was flex before */
+  display: block;
 }
 
 #skinToneWrapper {
   display: grid;
-  grid-template-columns: 22vw auto;  /* Force label to fixed width */
+  grid-template-columns: 22vw auto; 
   align-items: center;
   margin-bottom: 4vw;
 }
@@ -218,18 +209,16 @@ body {
 
 #skinTypeSummary {
   font-size: 1.25vw;
-  margin-left: 3.2vw; /* Match approx input alignment */
+  margin-left: 3.2vw; 
 }
-
 
 #skinTypeEditor {
   width: 100%;
   margin-top: 1vw;
   display: flex;
   flex-direction: column;
-  align-items: center; /* center child elements like the button */
+  align-items: center; 
 }
-
 
 #skinTypeCheckboxRow {
   display: flex;
@@ -237,26 +226,22 @@ body {
   flex-wrap: wrap;
   gap: 0.5vw;
   margin-top: 1vw;
-  justify-content: flex-start; /* keep labels left-aligned within the row */
-  width: fit-content;          /* shrink container to content width */
+  justify-content: flex-start; 
+  width: fit-content;        
   margin-left: auto;
   margin-right: auto; #skinTypeWrapper {
-  margin-bottom: 2vw;  /* Add this line for consistent spacing */
+  margin-bottom: 2vw; 
   display: block;
 }
-         /* center whole group horizontally */
 }
-
 
 #skinTypeCheckboxRow label {
   white-space: nowrap;
   font-size: 1.1vw;
   display: inline-flex;
   align-items: center;
-  gap: 0.3vw;  /* spacing between checkbox and label text */
+  gap: 0.3vw; 
 }
-
-
 
 #skinTypeEditor label {
   font-size: 1.25vw;
@@ -274,7 +259,7 @@ body {
   margin-top: 1vw;
   margin-bottom: 4vw;
   display: block;
-  align-self: center;      /* should help in flex column */
+  align-self: center;  
   text-align: center;
 }
 
@@ -284,8 +269,6 @@ body {
   margin-top: 1vw;
   margin-bottom: 0.2vw;
 }
-
-
 
 /* Form Input Styling */
 input[type="text"],
@@ -311,8 +294,8 @@ select:focus {
 #concernTags,
 #goalTags,
 #allergyTags {
-  margin-top: 0.2vw;  /* ↓ less space above */
-  margin-bottom: 2vw; /* ↑ more space below to push away from "Skin Goals" */
+  margin-top: 0.2vw;  
+  margin-bottom: 2vw; 
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

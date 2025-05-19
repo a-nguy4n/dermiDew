@@ -52,7 +52,6 @@ async function saveProfile() {
   }
 }
 
-
 // **** Profile Tab Button Content Activations  ****
 const tabButtons = document.querySelectorAll('.profileTabButtons button');
 const tabContents = document.querySelectorAll('.tabContent, .tabContentActive');
@@ -122,9 +121,7 @@ if (res.ok) {
   editor.style.display = "none";
   editBtn.style.display = "inline-block";
 }
-
 });
-
 
 // Enforce max 2 selections live
 checkboxes.forEach(cb => {
@@ -164,8 +161,6 @@ function setupTagInput(inputId, containerId) {
   setupTagInput("alleryInput", "allergyTags");
 
 document.getElementById("skinToneSelect").addEventListener("change", saveProfile);
-
-  
 
 // Past Products
 const productGrid = document.getElementById("productGrid");
