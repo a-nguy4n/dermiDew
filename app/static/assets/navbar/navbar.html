@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Navigation Bar</title>
-    <link rel="stylesheet" href="/app/static/assets/navbar/navbar.css">
+    <link rel="stylesheet" href="/static/assets/navbar/navbar.css">
 </head>
 
 <body>
     <nav>
         <ul class="sections">
-            <li id="navHome"><a href="/app/static/pages/home.html"> Home </a></li>
-            <li id="navProfile"><a href="/app/static/pages/profile.html"> Profile </a></li>
-            <li id="navExplore"><a href="/app/static/pages/exploreProducts.html"> Explore Products </a></li>
-            <li id="navAbout"><a href="/app/index.html"> About Us </a></li>
+            <li id="navHome"><a href="/home.html"> Home </a></li>
+            <li id="navProfile"><a href="/profile.html"> Profile </a></li>
+            <li id="navExplore"><a href="/exploreproducts.html"> Explore Products </a></li>
+            <li id="navAbout"><a href="/static/aboutus.html"> About Us </a></li>
             <li class="dropdown">
                 <span id="navHelp"> Help </span> 
                 <ul class="helpMenu">
-                    <li id="landingHelp"><a href="/app/index.html"> Redirect to Landing Help </a></li>
+                    <li id="landingHelp"><a href="/landing.html"> Redirect to Landing Help </a></li>
                     <li> Step by Step Web Help </li>
                 </ul>
             </li>
@@ -25,34 +25,29 @@
     </nav>
     
     <script>
-        window.onload = function () {
-          const currentPage = window.location.pathname;
-          const currentFile = currentPage.split('/').pop();
-      
-          console.log('Current Page:', currentPage);
-      
-          document.querySelectorAll('nav a').forEach(link => {
-            const href = link.getAttribute('href');
-            const hrefFile = href.split('/').pop();
-      
-            if (currentFile === hrefFile) {
-              console.log('Matched:', href);
-              link.classList.add('active');
-            }
-          });
-      
-          document.querySelectorAll('nav span').forEach(span => {
-            const parent = span.closest('li');
-            const helpLink = parent?.querySelector('a');
-            if (helpLink) {
-              const helpHrefFile = helpLink.getAttribute('href').split('/').pop();
-              if (currentFile === helpHrefFile) {
-                span.classList.add('active');
-              }
-            }
-          });
-        };
-    </script>
+  window.onload = function () {
+    const path = window.location.pathname;
+
+    document.querySelectorAll('nav a').forEach(link => {
+      const href = link.getAttribute('href');
+
+      // Make sure the link matches even if there's a trailing slash or file
+      if (path === href || path.startsWith(href + "/") || path.endsWith(href)) {
+        link.classList.add('active');
+      }
+    });
+
+    // For the Help <span>
+    const helpLink = document.querySelector('#landingHelp a');
+    if (helpLink) {
+      const helpHref = helpLink.getAttribute('href');
+      if (path === helpHref || path.startsWith(helpHref + "/") || path.endsWith(helpHref)) {
+        document.getElementById('navHelp').classList.add('active');
+      }
+    }
+  };
+</script>
+
 </body>
 
 </html>

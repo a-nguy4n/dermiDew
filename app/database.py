@@ -97,7 +97,19 @@ async def setup_database(initial_users: dict = None):
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
+        """,
+        "skin_profiles": """
+            CREATE TABLE skin_profiles (
+                user_id INT PRIMARY KEY,
+                skin_type VARCHAR(255),
+                skin_tone VARCHAR(50),
+                concerns TEXT,
+                goals TEXT,
+                allergies TEXT,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
         """
+
     }
 
     try:
@@ -105,7 +117,7 @@ async def setup_database(initial_users: dict = None):
         cursor = connection.cursor()
 
         # Drop tables in an order that respects foreign key constraints (child tables first)
-        for table in ["sessions", "users"]:
+        for table in ["skin_profiles", "sessions", "users"]:
             logger.info(f"Dropping table {table} if it exists...")
             cursor.execute(f"DROP TABLE IF EXISTS {table}")
             connection.commit()
@@ -118,10 +130,14 @@ async def setup_database(initial_users: dict = None):
             logger.info(f"Table {table_name} created successfully")
 
         # Insert initial users if provided
+        # Insert initial users if provided
         if initial_users:
-            insert_query = "INSERT INTO users (email, password) VALUES (%s, %s)"
-            for email, password in initial_users.items():
-                cursor.execute(insert_query, (email, password))
+            insert_query = "INSERT INTO users (email, password, first_name, last_name) VALUES (%s, %s, %s, %s)"
+            for email, user_info in initial_users.items():
+                password = user_info["password"]
+                first_name = user_info["first_name"]
+                last_name = user_info["last_name"]
+                cursor.execute(insert_query, (email, password, first_name, last_name))
             connection.commit()
             logger.info(f"Inserted {len(initial_users)} initial users")
 
@@ -238,5 +254,45 @@ async def create_user(email: str, password: str, first_name: str, last_name: str
             cursor.close()
         if connection and connection.is_connected():
             connection.close()
+
+async def get_skin_profile(user_id: int) -> Optional[dict]:
+    """Retrieve the skin profile for a given user."""
+    connection = None
+    cursor = None
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM skin_profiles WHERE user_id = %s", (user_id,))
+        return cursor.fetchone()
+    finally:
+        if cursor:
+            cursor.close()
+        if connection and connection.is_connected():
+            connection.close()
+
+async def upsert_skin_profile(user_id: int, skin_type: str, skin_tone: str, concerns: str, goals: str, allergies: str) -> None:
+    """Insert or update the user's skin profile."""
+    connection = None
+    cursor = None
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("""
+            INSERT INTO skin_profiles (user_id, skin_type, skin_tone, concerns, goals, allergies)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+                skin_type = VALUES(skin_type),
+                skin_tone = VALUES(skin_tone),
+                concerns = VALUES(concerns),
+                goals = VALUES(goals),
+                allergies = VALUES(allergies)
+        """, (user_id, skin_type, skin_tone, concerns, goals, allergies))
+        connection.commit()
+    finally:
+        if cursor:
+            cursor.close()
+        if connection and connection.is_connected():
+            connection.close()
+
 
 

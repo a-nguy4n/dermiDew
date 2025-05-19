@@ -1,230 +1,324 @@
-@font-face{
-    font-family: "Sarala Regular";
-    src: url("/app/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
-    font-weight: 400;
-    font-style: normal;
+@font-face {
+  font-family: "Sarala Regular";
+  src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
 
-body{
-    font-family: "Sarala Regular";
-    overflow: hidden;
+* {
+  box-sizing: border-box;
 }
 
-.profileContainer{
-    display: grid;
-    grid-template-columns: 25% 70%;
-    gap: 5%;
-    margin: 3% 4% 5% 4%;
-    height: 30vw;
+body {
+  font-family: "Sarala Regular";
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.profileColumnOne{
-    border: 2px solid #FFCC00;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;    
-    justify-content: center; 
-    text-align: center; 
+/* Main Container */
+.profileContainer {
+  display: grid;
+  grid-template-columns: 25% 70%;
+  gap: 5%;
+  margin: 3% 4% 5% 4%;
+  min-height: 100vh;
+  align-items: stretch; /* Ensures both children are stretched */
 }
 
-.profileColumnOne img{
-    width: 15vw;
-    margin: 10% 0%;
+
+
+.profileColumnOne,
+.profileColumnTwo {
+  align-self: start;     /* Let the grid stretch both columns equally */
 }
 
-.profileColumnOne h1{
-    font-size: 2vw;
-    font-weight: 300;
-    margin-bottom: 10%;
+
+/* Left Column */
+.profileColumnOne {
+  border: 2px solid #FFCC00;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
-.profileColumnOne p{
-    font-size: 1.1vw;
-    font-weight: 300;
-    color: gray;
- }
-
-#memberTime{
-    margin-bottom: 20%;
+.profileColumnOne img {
+  width: 15vw;
+  margin: 10% 0;
 }
 
-.profileColumnTwo{
-    border: 2px solid #FFCC00;
-    border-radius: 10px;
-    height: 95%;
-    margin-top: 2.5%;
-    display: flex; 
-    flex-direction: column;
+.profileColumnOne h1 {
+  font-size: 2vw;
+  font-weight: 300;
+  margin-bottom: 10%;
 }
+
+.profileColumnOne p {
+  font-size: 1.1vw;
+  font-weight: 300;
+  color: gray;
+}
+
+#memberTime {
+  margin-bottom: 20%;
+}
+
+/* Right Column */
+.profileColumnTwo {
+  position: relative;
+  border: 2px solid #FFCC00;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 3vw;
+  padding-bottom: 0.5vw;
+  background-color: white;
+}
+
+
+
 
 .profileTabButtons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 8px;                  
-  }
-
-.profileColumnTwo button{
-    white-space: nowrap;
-    font-family: "Sarala Regular";
-    font-size: 1.3vw;
-    color: rgb(253, 250, 250);
-    background-color: #FFCC00;
-    border: #FFCC00; 
-    border-radius: 8px;     
-    padding: 0.75% 2.5%;
-    transform: translateX(-5%) translateY(-50%);
-}
-
-.profileColumnTwo button:hover{
-    background-color: #FFBB00;
-}
-
-/* Tab Activations */
-
-.tabContent{
-    display: none;
-    padding: 20px;
-    width: 100%;
-    overflow-y: auto;
-}
-  
-.tabContentActive{
-    display: block;
-    padding: 20px;
-    width: 100%;
-    overflow-y: auto;
-}
-
-.tabButtonActive{
-    background-color: #FFBB00 !important;
-    color: white;
-    border: 2px solid #FFBB00;
-}
-
-.profileColumnTwo button:hover:not(.tabButtonActive){
-    background-color: #FFBB00;
-}
-  
-
-/* My Device Content Styling */
-
-#tabDevice.tabContentActive {
-    display: flex;
-    flex-direction: row;
-    gap: 3vw;
-}  
-
-#tabDevice img{
-    width: 25vw;
-}
-
-#deviceInfo{
-    font-size: 1.5vw;
-    line-height: 4.5;
-    margin-top: 2.5%;
-}
-
-/* Skin Profile Content Styling */
-#tabSkinProfile{
-    padding: 2vw;
-    font-family: "Sarala Regular";
-}
-  
-/* Skin Type Section */
-#skinTypeWrapper{
-    margin-bottom: 2vw;
-}
-  
-#skinTypeDisplay{
-    display: flex;
-    align-items: center;
-    gap: 1vw;
-}
-  
-#editIcon{
-    width: 1vw;
-    cursor: pointer;
-}
-  
-#skinTypeLabel,
-#tabSkinProfile label{
-    font-weight: 600;
-    font-size: 1.5vw;
-}
-  
-#skinTypeSummary{
-    font-size: 1.25vw;
-}
-  
-#skinTypeEditor{
-    margin-left: 2vw;
-    margin-top: 1vw;
-}
-  
-#skinTypeEditor label{
-    font-size: 1.25vw;
-    margin-right: 1vw;
-    display: inline-block;
-}
-  
-#saveSkinType{
-    font-size: 1vw;
-    padding: 0.5% 1%;
-    margin-left: 1vw;
-    background-color: rgb(44, 190, 44);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-  
-/* Skin Tone Section */
-#skinToneWrapper{
-    display: flex;
-    align-items: center;
-    gap: 1vw;
-    margin: 2% 0;
-}
-  
-#skinToneSelect{
-    font-family: "Sarala Regular";
-    font-size: 1.25vw;
-    padding: 0.1vw 0.2vw;
-}
-  
-/* Skin Concerns, Goals, Allergy Section */
-#concernWrapper,
-#goalsWrapper,
-#allergyWrapper{
+  position: absolute;
+  top: 0;
+  left: 2vw;
+  transform: translateY(-35%); /* pull up enough to touch the border but not clip */
   display: flex;
-  align-items: center;
   gap: 1vw;
-  margin-top: 2%;
+  z-index: 2;
+  background-color: white;
+  padding: 0 1vw;
+}
+
+/* Tab Buttons */
+.profileColumnTwo button {
+  font-family: "Sarala Regular";
+  font-size: 1.2vw;
+  font-weight: 600;
+  color: white;
+  background-color: #FFCC00;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7vw 2vw;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profileColumnTwo button:hover {
+  background-color: #FFBB00;
+}
+
+.tabButtonActive {
+  background-color: #FFBB00 !important;
+  color: white;
+  border: none;
+}
+
+.tabButton {
+  background-color: #FFCC00;
+  color: white;
+}
+
+/* Optional: Add divider between tabs */
+.profileColumnTwo button:not(:last-child) {
+  margin-right: -0.3vw;
+  border-right: 2px solid white;
+}
+
+/* Tab Content */
+.tabContent {
+  display: none;
+  padding: 2vw;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.tabContentActive {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+
+
+/* Device Tab */
+#tabDevice.tabContentActive {
+  display: flex;
+  flex-direction: row;
+  gap: 3vw;
+}
+
+#tabDevice img {
+  width: 25vw;
+}
+
+#deviceInfo {
+  font-size: 1.5vw;
+  line-height: 4;
+  margin-top: 2.5%;
+}
+
+/* Skin Profile Styling */
+#tabSkinProfile {
+  padding: 2vw;
   font-family: "Sarala Regular";
 }
 
-#concernInput,
-#goalInput,
-#alleryInput{
-  font-size: 1.2vw;
-  padding: 0.5vw;
-  width: 12vw;
+#concernWrapper,
+#goalsWrapper,
+#allergyWrapper {
+  display: grid;
+  grid-template-columns: 22vw auto;  /* Force label to fixed width */
+  align-items: center;
+  margin-bottom: 2vw;
 }
 
-/* Tag Display Area */
+
+#skinToneWrapper label,
+#concernWrapper label,
+#goalsWrapper label,
+#allergyWrapper label {
+  width: 22vw;  /* Align all labels */
+  font-weight: 600;
+  font-size: 1.5vw;
+}
+
+/* Skin Type Display */
+#skinTypeWrapper {
+  margin-bottom: 4vw;
+  display: block; /* was flex before */
+}
+
+#skinToneWrapper {
+  display: grid;
+  grid-template-columns: 22vw auto;  /* Force label to fixed width */
+  align-items: center;
+  margin-bottom: 4vw;
+}
+
+#skinTypeDisplay {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+}
+
+#editIcon {
+  width: 1vw;
+  cursor: pointer;
+}
+
+#skinTypeLabel,
+#tabSkinProfile label {
+  font-weight: 600;
+  font-size: 1.5vw;
+  min-width: 18vw;
+}
+
+#skinTypeSummary {
+  font-size: 1.25vw;
+  margin-left: 3.2vw; /* Match approx input alignment */
+}
+
+
+#skinTypeEditor {
+  width: 100%;
+  margin-top: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center child elements like the button */
+}
+
+
+#skinTypeCheckboxRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5vw;
+  margin-top: 1vw;
+  justify-content: flex-start; /* keep labels left-aligned within the row */
+  width: fit-content;          /* shrink container to content width */
+  margin-left: auto;
+  margin-right: auto; #skinTypeWrapper {
+  margin-bottom: 2vw;  /* Add this line for consistent spacing */
+  display: block;
+}
+         /* center whole group horizontally */
+}
+
+
+#skinTypeCheckboxRow label {
+  white-space: nowrap;
+  font-size: 1.1vw;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3vw;  /* spacing between checkbox and label text */
+}
+
+
+
+#skinTypeEditor label {
+  font-size: 1.25vw;
+  display: inline-block;
+}
+
+#saveSkinType {
+  font-size: 1vw;
+  padding: 0.5vw 1vw;
+  background-color: rgb(44, 190, 44);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1vw;
+  margin-bottom: 4vw;
+  display: block;
+  align-self: center;      /* should help in flex column */
+  text-align: center;
+}
+
+#saveSkinTypeWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1vw;
+  margin-bottom: 0.2vw;
+}
+
+
+
+/* Form Input Styling */
+input[type="text"],
+select {
+  box-sizing: border-box;
+  font-size: 1.2vw;
+  padding: 0.3vw 1vw;
+  width: 30vw;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Sarala Regular";
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #FFCC00;
+  box-shadow: 0 0 6px rgba(255, 204, 0, 0.5);
+}
+
+/* Tags Display Area */
 #concernTags,
 #goalTags,
-#allergyTags{
-  margin-top: 1vw;
+#allergyTags {
+  margin-top: 0.2vw;  /* ↓ less space above */
+  margin-bottom: 2vw; /* ↑ more space below to push away from "Skin Goals" */
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-/* Tag Style for Concerns, Goals, Allergy */
-.tag-chip{
+.tag-chip {
   background-color: #FFCC00;
   color: white;
   padding: 6px 12px;
@@ -236,7 +330,7 @@ body{
   line-height: 1;
 }
 
-.tag-chip button{
+.tag-chip button {
   all: unset;
   display: flex;
   align-items: center;
@@ -248,44 +342,53 @@ body{
   line-height: 1;
 }
 
-.tag-chip button:hover{
+.tag-chip button:hover {
   color: red;
 }
 
-  
-/* Past Products Content Styling */
-
+/* Past Products Grid */
 #productGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin: 1% 4%;
-    max-height: 25vw;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  
-  
-  #productGrid::-webkit-scrollbar {
-    width: 6px;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 1% 4%;
+  max-height: 34vw;
+  overflow-y: auto;
+  gap: 1vw;
+}
 
-  #productGrid::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 3px;
-  }
-  
-  /* Each product card */
-  .productCard {
-    width: 15vw;
-    height: 15vw;
-    background-color: #e5e5e5;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1vw;
-    font-weight: 600;
-    color: black;
-    margin-bottom: 10%;
-  }
-  
+#productGrid::-webkit-scrollbar {
+  width: 6px;
+}
+
+#productGrid::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.productCard {
+  width: 15vw;
+  height: 15vw;
+  background-color: #e5e5e5;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1vw;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 10%;
+}
+
+#logoutButton {
+  font-family: "Sarala Regular";
+  font-size: 1.2vw;
+  font-weight: 600;
+  color: white;
+  background-color: rgb(255, 62, 62);
+  border: none;
+  border-radius: 12px;
+  padding: 0.7vw 2vw;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 2vw;
+}

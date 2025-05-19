@@ -25,13 +25,15 @@ from app.database import (
     setup_database,
     get_user_by_email,
     get_user_by_id,
+    get_skin_profile,
+    upsert_skin_profile,
     create_session,
     get_session,
     delete_session,
     create_user,
 )
 
-INIT_USERS = {"alice@gmail.com": "pass123", "bob@gmail.com": "pass456"}
+INIT_USERS = {"alice@gmail.com": {"password": "pass123", "first_name": "Alice", "last_name": "Smith"}, "bob@gmail.com": {"password": "pass456", "first_name": "Bob", "last_name": "Jones"}}
 
 # database startup
 @asynccontextmanager
@@ -161,7 +163,7 @@ async def user_page(email: str, request: Request):
 
    # If all valid, show landing page
    else:
-       profile_html = read_html("./app/index.html")
+       profile_html = read_html("./app/landing.html")
        return HTMLResponse(content=profile_html.replace("{email}", email))
 
 @app.get("/signup", response_class=HTMLResponse)
@@ -198,31 +200,12 @@ async def signup(request: Request, email: str = Form(...), firstname: str = Form
 
    return response  
 
-
-# @app.get("/profile", response_class=HTMLResponse)
-# async def profile_page(request: Request):
-#     """Show the profile page."""
-#     session_id = request.cookies.get("sessionId")
-#     session = await get_session(session_id)
-
-#     if not session:
-#         return RedirectResponse(url="/login")
-
-#     user = await get_user_by_id(session["user_id"])
-#     if not user:
-#         return RedirectResponse(url="/login")
-
-#     profile_html = read_html("./app/profile/profile.html")
-#     profile_html = profile_html.replace("{user_id}", str(user["id"]))
-    
-#     return HTMLResponse(content=profile_html)
-
 # Mount the static directory
 app.mount("/static", StaticFiles(directory="./app/static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-  with open("./app/index.html") as html:
+  with open("./app/aboutus.html") as html:
     return HTMLResponse(content=html.read())
 
 @app.get("/home", response_class=HTMLResponse)
@@ -230,10 +213,91 @@ def get_html() -> HTMLResponse:
     with open("./app/static/pages/home.html") as html:
         return HTMLResponse(content=html.read())
 
-@app.get("/index", response_class=HTMLResponse)
+@app.get("/aboutus", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-    with open("./app/index.html") as html:
+    with open("./app/aboutus.html") as html:
         return HTMLResponse(content=html.read())
+    
+@app.get("/landing", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("./app/landing.html") as html:
+        return HTMLResponse(content=html.read())
+    
+@app.get("/profile", response_class=HTMLResponse)
+async def profile_page(request: Request):
+    """Show the profile page with user's data."""
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+
+    if not session:
+        return RedirectResponse(url="/login")
+
+    user = await get_user_by_id(session["user_id"])
+    if not user:
+        return RedirectResponse(url="/login")
+
+    from app.database import get_skin_profile  # make sure this is imported
+
+    # Load and personalize static profile.html
+    profile_html = read_html("./app/static/pages/profile.html")
+
+    # Fill in basic user info
+    full_name = f"{user.get('first_name', '')} {user.get('last_name', '')}".strip()
+    created_date = user.get("created_at")
+    if created_date:
+        created_date = created_date.strftime("%B %d, %Y")
+    else:
+        created_date = "Unknown"
+
+    profile_html = profile_html.replace("User Full Name", full_name or "Unknown User")
+    profile_html = profile_html.replace("userEmail@somegmail.com", user.get("email", "unknown@example.com"))
+    profile_html = profile_html.replace("date account created", created_date)
+
+    # ⬇️ NEW: Load and embed their skin profile data for JS to access
+    skin_data = await get_skin_profile(user["id"])
+    skin_json = json.dumps(skin_data or {})
+
+    # Inject a <script> tag to expose data to profile.js
+    profile_html += f"""
+    <script>
+        const loadedSkinProfile = {skin_json};
+    </script>
+    """
+
+    return HTMLResponse(content=profile_html)
+
+@app.post("/profile/save")
+async def save_profile(request: Request, data: dict = Body(...)):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Unauthorized"})
+
+    user_id = session["user_id"]
+    await upsert_skin_profile(
+        user_id,
+        data.get("skin_type", ""),
+        data.get("skin_tone", ""),
+        data.get("concerns", ""),
+        data.get("goals", ""),
+        data.get("allergies", "")
+    )
+    return {"message": "Profile saved successfully"}
+
+""" @app.get("/exploreproducts", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("./app/static/pages/exploreproducts.html") as html:
+        return HTMLResponse(content=html.read())
+    
+@app.get("/about", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("./app/static/pages/about.html") as html:
+        return HTMLResponse(content=html.read())
+    
+@app.get("/help", response_class=HTMLResponse)
+def get_html() -> HTMLResponse:
+    with open("./app/static/pages/help.html") as html:
+        return HTMLResponse(content=html.read()) """
 
 if __name__ == "__main__":
     uvicorn.run(app="app.main:app", host="0.0.0.0", port=6543, reload=True)
