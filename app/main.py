@@ -205,7 +205,7 @@ app.mount("/static", StaticFiles(directory="./app/static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-  with open("./app/aboutus.html") as html:
+  with open("./app/about.html") as html:
     return HTMLResponse(content=html.read())
 
 @app.get("/home", response_class=HTMLResponse)
@@ -213,9 +213,9 @@ def get_html() -> HTMLResponse:
     with open("./app/static/pages/home.html") as html:
         return HTMLResponse(content=html.read())
 
-@app.get("/aboutus", response_class=HTMLResponse)
+@app.get("/about", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-    with open("./app/aboutus.html") as html:
+    with open("./app/about.html") as html:
         return HTMLResponse(content=html.read())
     
 @app.get("/landing", response_class=HTMLResponse)
