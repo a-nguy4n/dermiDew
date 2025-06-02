@@ -3,6 +3,28 @@ fetch('/static/assets/navbar/navbar.html')
 .then(res => res.text())
 .then(data => {
   document.getElementById('navbarContainer').innerHTML = data;
+
+  // Active Link Highlighting Logic AFTER navbar loads
+    const path = window.location.pathname;
+
+    document.querySelectorAll('nav a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (path === href || path.startsWith(href + "/") || path.endsWith(href)) {
+        link.classList.add('active');
+      }
+    });
+
+    // Optional: Highlight the Help <span> if its dropdown is selected
+    const helpLink = document.querySelector('#landingHelp a');
+    if (helpLink) {
+      const helpHref = helpLink.getAttribute('href');
+      if (path === helpHref || path.startsWith(helpHref + "/") || path.endsWith(helpHref)) {
+        const helpSpan = document.getElementById('navHelp');
+        if (helpSpan) {
+          helpSpan.classList.add('active');
+        }
+      }
+    }
 });
 
 

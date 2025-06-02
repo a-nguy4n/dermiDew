@@ -144,7 +144,7 @@ async def logout():
 
 @app.get("/user/{email}", response_class=HTMLResponse)
 async def user_page(email: str, request: Request):
-   """Show landing page if authenticated, error if not"""
+   """Show home page if authenticated, error if not"""
    # Get sessionId from cookies
    session_id = request.cookies.get("sessionId")
 
@@ -161,10 +161,9 @@ async def user_page(email: str, request: Request):
    if fetched_user is None or fetched_user["email"] != email:
        return HTMLResponse(content=get_error_html(email), status_code=status.HTTP_403_FORBIDDEN)
 
-   # If all valid, show landing page
+   # If all valid, show home page
    else:
-       profile_html = read_html("./app/landing.html")
-       return HTMLResponse(content=profile_html.replace("{email}", email))
+       return RedirectResponse(url="/home")
 
 @app.get("/signup", response_class=HTMLResponse)
 async def signup_page():
@@ -284,7 +283,7 @@ async def save_profile(request: Request, data: dict = Body(...)):
     )
     return {"message": "Profile saved successfully"}
 
-""" @app.get("/exploreproducts", response_class=HTMLResponse)
+@app.get("/exploreproducts", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
     with open("./app/static/pages/exploreproducts.html") as html:
         return HTMLResponse(content=html.read())
@@ -297,7 +296,7 @@ def get_html() -> HTMLResponse:
 @app.get("/help", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
     with open("./app/static/pages/help.html") as html:
-        return HTMLResponse(content=html.read()) """
+        return HTMLResponse(content=html.read())
 
 if __name__ == "__main__":
     uvicorn.run(app="app.main:app", host="0.0.0.0", port=6543, reload=True)

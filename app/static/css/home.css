@@ -7,7 +7,8 @@
 
 body{
     font-family: "Sarala Regular";
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     background-image: 
         url('/static/assets/images/fillerBubbleOne.png'),
