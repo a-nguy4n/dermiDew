@@ -86,9 +86,56 @@ document.getElementById('currRoutineBubble').addEventListener('click', () => {
 document.getElementById('goalsBubble').addEventListener('click', () => {
   showWindow(`
     <section id="goalContent"> 
-      <h2> Daily Goals </h2>
-  
+      <h2>My Skincare Goals</h2>
+      <div id="goalsContainer">
+        <div class="goalBlock">
+          <h3>Daily Goals:</h3>
+          <div class="goalList">
+            <div class="goalItem"><input type="checkbox"> <span contenteditable="true">  </span></div>
+          </div>
+          <button class="addGoalBtn">+ add daily goal</button>
+        </div>
+        <div class="goalBlock">
+          <h3>Weekly Goals:</h3>
+          <div class="goalList">
+            <div class="goalItem"><input type="checkbox"> <span contenteditable="true">   </span></div>
+          </div>
+          <button class="addGoalBtn">+ add weekly goal</button>
+        </div>
+        <div class="goalBlock">
+          <h3>Monthly Goals:</h3>
+          <div class="goalList">
+            <div class="goalItem"><input type="checkbox"> <span contenteditable="true">   </span></div>
+          </div>
+          <button class="addGoalBtn">+ add monthly goal</button>
+        </div>
+      </div>
     </section>
-  `, 
-  'goalsWindow');
+  `, 'goalsWindow');
+
+  // goal removal 
+  function enableGoalBehavior() {
+    document.querySelectorAll('.goalItem input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked){
+          setTimeout(() => {
+            checkbox.closest('.goalItem').remove();
+          }, 500);
+        }
+      });
+    });
+  }
+  enableGoalBehavior();
+
+  // adding new goal to edit 
+  document.querySelectorAll('.addGoalBtn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const goalList = btn.previousElementSibling;
+      const newItem = document.createElement('div');
+      newItem.className = 'goalItem';
+      newItem.innerHTML = `<input type="checkbox"> <span contenteditable="true">  </span>`;
+      goalList.appendChild(newItem);
+      enableGoalBehavior();
+    });
+  });
 });
