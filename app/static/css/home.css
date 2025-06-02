@@ -1,6 +1,6 @@
 @font-face{
     font-family: "Sarala Regular";
-    src: url("/app/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
 }
@@ -10,13 +10,13 @@ body{
     overflow: hidden;
 
     background-image: 
-        url('/app/static/assets/images/fillerBubbleOne.png'),
-        url('/app/static/assets/images/fillerBubbleTwo.png'),
-        url('/app/static/assets/images/fillerBubbleThree.png'),
-        url('/app/static/assets/images/fillerBubbleFour.png'),
-        url('/app/static/assets/images/fillerBubbleFive.png'),
-        url('/app/static/assets/images/fillerBubbleSix.png'),
-        url('/app/static/assets/images/fillerBubbleSeven.png');
+        url('/static/assets/images/fillerBubbleOne.png'),
+        url('/static/assets/images/fillerBubbleTwo.png'),
+        url('/static/assets/images/fillerBubbleThree.png'),
+        url('/static/assets/images/fillerBubbleFour.png'),
+        url('/static/assets/images/fillerBubbleFive.png'),
+        url('/static/assets/images/fillerBubbleSix.png'),
+        url('/static/assets/images/fillerBubbleSeven.png');
     
     background-position: 4.5vw 23vw, 30vw 48vw, 65vw 27vw, 33vw 20vw, 89vw 52vw, 94vw 11vw, 70vw 50vw;
     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;

@@ -5,7 +5,7 @@ fetch('/static/assets/navbar/navbar.html')
 .then(data => {
   document.getElementById('navbarContainer').innerHTML = data;
 
-  // 🔽 Active Link Highlighting Logic AFTER navbar loads
+  // Active Link Highlighting Logic AFTER navbar loads
     const path = window.location.pathname;
 
     document.querySelectorAll('nav a').forEach(link => {
