@@ -1,0 +1,372 @@
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/app/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+    font-family: "Sarala Regular";
+    overflow: hidden;
+
+    background-image: 
+        url('/app/static/assets/images/fillerBubbleOne.png'),
+        url('/app/static/assets/images/fillerBubbleTwo.png'),
+        url('/app/static/assets/images/fillerBubbleThree.png'),
+        url('/app/static/assets/images/fillerBubbleFour.png'),
+        url('/app/static/assets/images/fillerBubbleFive.png'),
+        url('/app/static/assets/images/fillerBubbleSix.png'),
+        url('/app/static/assets/images/fillerBubbleSeven.png');
+    
+    background-position: 4.5vw 23vw, 30vw 48vw, 65vw 27vw, 33vw 20vw, 89vw 52vw, 94vw 11vw, 70vw 50vw;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+    background-size: 8vw, 9vw, 8vw, 4vw, 9vw, 7vw, 4vw;
+}
+
+.contentContainer{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.contentContainer > div,
+.contentContainer > h2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+#welcomeBubble{
+    order: 2;
+    background-color: #87C3FF;
+    border-radius: 50%;
+    width: 18vw; 
+    height: 18vw; 
+    font-size: 1vw;
+    line-height: 1vw;
+
+    position: relative;
+    left: 30%;
+    bottom: -3vw;
+}
+
+#welcomeBubble p{
+   font-size: 1.35vw;
+}
+
+#streaksBubble{
+    order: 1;
+    background-color: #63acfa;
+    border-radius: 50%;
+    width: 12vw; 
+    height: 12vw; 
+    line-height: 1vw;
+
+    position: relative;
+    left: 15%;
+    bottom: -3vw;
+}
+
+#streaksBubble h2{
+    margin: 5% 0 0 0;
+    font-size: 1.3vw;
+}
+
+#streaksBubble p{
+    font-size: 1.2vw;
+}
+
+#streaksBubble img{
+    width: 5vw;
+}
+
+#skinStatusBubble{
+    order: 3;
+    background-color: #6daff0;
+    border-radius: 50%;
+    width: 16vw; 
+    height: 16vw; 
+    font-size: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+    margin-bottom: none;
+
+
+    position: relative;
+    bottom: -5vw;
+    left: 45%;
+}
+
+#skinStatusBubble img{
+    width: 4vw;
+    margin-top: none;
+}
+
+#currRoutineBubble{
+    order: 4;
+    background-color: #7bbcfc;
+    border-radius: 50%;
+    width: 15vw; 
+    height: 15vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+
+    position: relative;
+    bottom: -28vw;
+    right: 43%;
+}
+
+#currRoutineBubble h2{
+    font-size: 1.5vw;
+    margin-bottom: none;
+}
+
+#currRoutineBubble img{
+    width: 3.75vw;
+    margin-top: none;
+}
+
+#goalsBubble{
+    order: 5;
+    background-color: #63acfa;
+    border-radius: 50%;
+    width: 15vw; 
+    height: 15vw; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+
+    position: relative;
+    bottom: -22vw;
+    right: 35%;
+}
+
+#goalsBubble h2{
+    font-size: 1.5vw;
+    margin-top: none;
+}
+
+#goalsBubble img{
+    width: 4vw;
+    margin-bottom: none;
+}
+
+#skinAnalysisBubble{
+    order: 6;
+    background-color: #5aa7f4;
+    border-radius: 50%;
+    width: 17vw; 
+    height: 17vw; 
+    
+    position: relative;
+    right: 27%;
+    bottom: -27vw;
+}
+
+#skinAnalysisBubble h2{
+    font-size: 1.7vw;
+    margin-bottom: none;
+}
+
+#skinAnalysisBubble img{
+    width: 3.5vw;
+    margin: 0 0 5% 0;
+}
+
+.logBubbleContainer{
+    font-family: "Sarala Regular";
+    position: absolute;
+    top: 26vw;
+    right: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+#logBubble{
+    background-color: #89c3fd;
+    border-radius: 50%;
+    width: 15vw;
+    height: 15vw;
+    font-size: 0.9vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    z-index: 5;
+}
+
+#logBubble img{
+    width: 2.5vw;
+    margin-bottom: 0;
+}
+
+.logOptions{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 1vw;
+}
+
+#logBubble:hover .logOptions{
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.logOptions button{
+    width: 7vw;         
+    height: 7vw;      
+    border-radius: 50%;
+    color: white;
+    background-color: #a4cffd;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; 
+    position: relative;        
+}
+
+.logOptions button:hover{
+    background-color: #64afff;
+}
+
+#addLogBtn{
+    bottom: 9.5vw;
+    left: 9vw;
+}
+
+#entryBtn{
+    bottom: 11vw;
+    left: 5vw;
+}
+
+/* Bubble Animation */
+.bubble{
+    animation: float 3s ease-in-out infinite;
+}
+  
+.bubble.animate{
+    opacity: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes float{
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-1vw); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes floatWelcome{
+    0%   { transform: translate(0); }
+    50%  { transform: translateX(3vw) scale(1); }
+    100% { transform: translate(0) scale(1); }
+}
+
+@keyframes floatDiagonal{
+    0%   { transform: translate(0) scale(1); }
+    50%  { transform: translate(2vw, 2.5vw) scale(1); }
+    100% { transform: translate(0) scale(1); }
+}
+
+@keyframes floatStatus{
+    0%   { transform: translateY(0) scale(1); }
+    50%  { transform: translateY(1.4vw) scale(1); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes floatRoutine{
+    0%   { transform: translate(-1vw, 0) scale(1); }
+    50%  { transform: translate(1vw, 3vw) scale(1); }
+    100% { transform: translate(-1vw, 0) scale(1); }
+}
+  
+@keyframes floatGoals{
+    0%   { transform: translateY(0) scale(1); }
+    50%  { transform: translateY(-2vw) scale(1); }
+    100% { transform: translateY(0) scale(1); }
+}
+  
+@keyframes floatAnalysis{
+    0%   { transform: translateX(0) scale(1); }
+    50%  { transform: translateX(-3vw) scale(1); }
+    100% { transform: translateX(0) scale(1); }
+}
+  
+@keyframes floatLog{
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(0.5vw, 3vw) scale(1); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+  
+#welcomeBubble{ 
+    animation: floatWelcome 5s ease-in-out infinite;
+}
+
+#streaksBubble{ 
+    animation: floatDiagonal 6s ease-in-out infinite;
+    animation-delay: 0.2s; 
+}
+
+#skinStatusBubble{ 
+    animation: floatStatus 3s ease-in-out infinite;
+    animation-delay: 0.1s; 
+}
+
+#currRoutineBubble{
+    animation: floatRoutine 4.5s ease-in-out infinite;
+}
+  
+#goalsBubble{
+    animation: floatGoals 4s ease-in-out infinite;
+}
+  
+#skinAnalysisBubble{
+    animation: floatAnalysis 3.8s ease-in-out infinite;
+}
+  
+.logBubbleContainer{
+    animation: floatLog 4.2s ease-in-out infinite;
+}
+
+#skinStatusBubble:hover,
+#currRoutineBubble:hover,
+#goalsBubble:hover,
+#skinAnalysisBubble:hover,
+#logBubble:hover{
+    background-color: #297fd5;
+    animation-play-state: paused;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.logBubbleContainer:hover{
+    animation-play-state: paused;
+}
