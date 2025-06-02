@@ -58,43 +58,115 @@
     flex-direction: column;
     max-height: 90vh;
     overflow-y: auto;
-  }
-  
-  
+}
+ 
 .statusContent{
     text-align: left;
     padding-left: 2vw;
 }
   
+
+
+
+
 /* Goal Content */
-/* #goalContent h2{
-    color: #5299e0; 
-    border: 2px solid #5299e0;
-    border-radius: 20px;
-    width: 20vw;
-    padding: 0 45% 0 3%;
-
-    justify-self: center;
-} */
-
 #goalContent{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     height: 100%;
     padding: 1vw;
     box-sizing: border-box;
-  }
+}
   
-  #goalContent h2{
+#goalContent h2{
+    font-family: "Slackside Regular";
     color: #5299e0;
-    border: 2px solid #5299e0;
-    border-radius: 20px;
-    padding: 0.5% 25% 0.5% 2%;
-    font-size: clamp(1.1vw, 2vw, 2vw);
-    text-align: center;
-    margin-bottom: 2vw;
+    font-size: 3vw;
     flex-shrink: 0;
-  }
+    margin: 0 0 0 2%;
+}
+  
+#goalsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5vw;
+    width: 100%;
+    margin-top: 2vw;
+}
+  
+.goalBlock{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 35vw;
+  padding: 1vw;
+  background-color: #edf8ffe6;
+  border-radius: 0.5vw;
+  box-sizing: border-box;
+  min-width: 200px;
+  flex: 1 1 calc(33.33% - 1vw);
+}
+
+.goalItem{
+    color: #1B538B;
+}
+
+.goalList{
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 1vw;
+}
+
+.goalList span[contenteditable="true"]{
+    display: inline-block;
+    min-width: 5vw;
+    border-bottom: 1px dashed #ccc;
+    outline: none;
+    cursor: text;
+    padding: 0.2vw;
+}
+
+.goalList span[contenteditable="true"]:focus{
+    border-bottom: 1px solid #5299e0;
+    color: #1B538B;
+}
+  
+.goalBlock h3{
+    margin: 0 0 0.5vw 0;
+    font-size: 1.5vw;
+    font-family: "Sarala Regular";
+    color: #1B538B;
+}
+  
+.goalBlock label{
+    font-size: 1.2vw;
+    font-family: "Sarala Regular";
+    color: #1B538B;
+    display: block;
+    margin-top: 0.5vw;
+}
+  
+.goalBlock input[type="checkbox"]{
+    transform: scale(1.2);
+    margin-right: 0.5vw;
+}
+
+.addGoalBtn{
+    align-self: center;
+    padding: 0.5vw 1vw;
+    font-size: 1vw;
+    font-family: "Sarala Regular";
+    background-color: #71afed;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+  
+.addGoalBtn:hover{
+    background-color: #5492d4;
+}
   
