@@ -4,8 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="/app/static/css/home.css">
+    <link rel="stylesheet" href="/app/static/css/homePopUps.css">
 </head>
 <body>
-    <h1> Welcome to home page! </h1>
+    <div id="navbarContainer"></div>
+
+    <div class="contentContainer">
+        <div id="welcomeBubble" class="bubble">
+            <h1> Welcome back!</h1>
+            <p><span id="homeName">User's Name Here</span></p>
+       </div>
+
+       <div id="streaksBubble" class="bubble">
+            <img src="/app/static/assets/images/setSun.png" alt="Sun Streaks Photo">
+            <h2> Streaks</h2>
+            <p><span id="streakCount"> # days </span></p>
+       </div>
+
+       <div id="skinStatusBubble" class="bubble"> 
+           <h2> View <br> Skin Status </h2> 
+           <img src="/app/static/assets/images/statusIcon.png" alt="Status Icon">
+       </div>
+
+       <div id="currRoutineBubble" class="bubble"> 
+           <h2> Current <br> Routine </h2>
+           <img src="/app/static/assets/images/routineIcon.png" alt="Routine Icon">
+       </div>
+
+
+       <div id="goalsBubble" class="bubble"> 
+        <img src="/app/static/assets/images/goalsIcon.png" alt="Goal Icon">
+           <h2> Daily Goals </h2> 
+       </div>
+
+       <div id="skinAnalysisBubble" class="bubble">
+            <h2 id="skinAnalysisHeader"> New Skin <br> Analysis </h2> 
+            <img src="/app/static/assets/images/analysisIcon.png" alt="Analysis Icon">
+       </div>
+
+       <div class="logBubbleContainer" class="bubble">
+           <div id="logBubble">
+                <img src="/app/static/assets/images/reviewLogIcon.png" alt="Review Log Icon">
+                <h2> Product <br> Review Log </h2>
+
+                <div class="logOptions">
+                    <button id="addLogBtn"> Add <br> a log </button>
+                    <button id="entryBtn"> View past entries </button>
+                </div>
+            </div>
+       </div> 
+       
+       <div id="homeWindow" class="window">
+        <div class="windowContent">
+          <span class="windowExit">&times;</span>
+          <div id="windowInnerContent" class="windowInnerContent"></div>
+        </div>
+      </div>      
+
+    </div>
+    
+    <script src="/app/static/js/home.js"></script>
+    
 </body>
 </html>
