@@ -73,7 +73,7 @@ document.getElementById('goalsBubble').addEventListener('click', () => {
 });
 
 
-async function loadGoals() {
+async function loadGoals(){
   const goalsContainer = document.getElementById('goalsContainer');
   if (!goalsContainer) return;
 
@@ -102,7 +102,7 @@ async function loadGoals() {
 }
 
 
-function createGoalBlock(type, goalsArray) {
+function createGoalBlock(type, goalsArray){
   const block = document.createElement('div');
   block.classList.add('goalBlock');
   block.style.backgroundColor = '#e8f6ff';
@@ -160,6 +160,7 @@ function createGoalBlock(type, goalsArray) {
 
   const newSpan = document.createElement('span');
   newSpan.setAttribute('contenteditable', 'true');
+  newSpan.dataset.placeholder = 'click to write goal';
   newSpan.style.borderBottom = '1px dotted #999';
   newSpan.style.flexGrow = '1';
   newSpan.style.color = '#285d9b';
@@ -176,8 +177,7 @@ function createGoalBlock(type, goalsArray) {
   return block;
 }
 
-
-function attachDeleteListeners() {
+function attachDeleteListeners(){
   document
     .querySelectorAll('.goalItem input[type="checkbox"]')
     .forEach(checkbox => {
@@ -202,15 +202,15 @@ function attachDeleteListeners() {
           setTimeout(() => {
             if (itemDiv) itemDiv.remove();
           }, 500);
-        } catch (err) {
+        } 
+        catch (err){
           console.error(err);
         }
       });
     });
 }
 
-
-function attachNewEntryListeners() {
+function attachNewEntryListeners(){
   document
     .querySelectorAll('span[contenteditable][data-new="true"]')
     .forEach(span => {
@@ -244,14 +244,14 @@ function attachNewEntryListeners() {
               return;
             }
             loadGoals();
-          } catch (err) {
+          } 
+          catch (err){
             console.error(err);
           }
         }
       });
     });
 }
-
 
 window.addEventListener('load', async () => {
   try {
@@ -272,7 +272,9 @@ window.addEventListener('load', async () => {
         streakElem.textContent = data.current_streak + ' days';
       }
     }
-  } catch (err) {
+  } 
+  
+  catch (err){
     console.error('Error fetching streak count:', err);
   }
 });

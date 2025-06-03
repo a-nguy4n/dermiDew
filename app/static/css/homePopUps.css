@@ -1,3 +1,16 @@
+@font-face{
+    font-family: "Slackside Regular";
+    src: url("/app/static/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
 .window{
     display: none;
     position: fixed;
@@ -8,7 +21,6 @@
     height: 100%;
     background-color: rgba(211, 211, 211, 0.5);
   
-    /* display: flex; */
     align-items: center;
     justify-content: center;
     padding: 5vw; 
@@ -45,14 +57,6 @@
     cursor: pointer;
 }
 
-/* Shared styling for content area */
-/* .windowInnerContent{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-} */
-
 .windowContent{
     display: flex;
     flex-direction: column;
@@ -65,10 +69,6 @@
     padding-left: 2vw;
 }
   
-
-
-
-
 /* Goal Content */
 #goalContent{
     display: flex;
@@ -81,7 +81,7 @@
 }
   
 #goalContent h2{
-    font-family: "Slackside Regular";
+    font-family: "Slackside Regular" !important;
     color: #5299e0;
     font-size: 3vw;
     flex-shrink: 0;
@@ -132,6 +132,15 @@
     border-bottom: 1px solid #5299e0;
     color: #1B538B;
 }
+
+.goalList span[contenteditable="true"][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: #999;
+    font-style: italic;
+    pointer-events: none;
+    display: inline-block;
+}
+
   
 .goalBlock h3{
     margin: 0 0 0.5vw 0;
