@@ -53,11 +53,123 @@ function showWindow(contentHTML, customClass = '') {
   sessionStorage.setItem('windowVisible', 'true');
 }
 
+// ------- ROUTINE WINDOW ------- 
+document.getElementById('currRoutineBubble').addEventListener('click', () => {
+  showWindow(`
+    <section id="currRoutineContent">
+      <div class="routineHeader"> 
+        <h2>My Current Routine</h2>
+        <div id="editRoutineButton">
+          <p>edit</p>
+          <img src="/static/assets/images/editIcon.png" alt="Edit Icon">
+        </div>
+      </div>
 
+      <div class="routineBlock">
+        <section id="morningRoutine">
+          <div id="morningHeader">
+            <h3>Morning</h3>
+            <img id="morningImg" src="/static/assets/images/sunIcon.png" alt="Sun Icon">
+           </div>
+           
+           <ol id="morningList">
+            <li>
+              <span class="stepLabel">Cleanser:</span>
+              <input type="text" class="stepInput" placeholder="add your cleanser here" disabled>
+            </li>
+              
+            <li>
+              <span class="stepLabel">Toner & Essence:</span>
+              <input type="text" class="stepInput" placeholder="add your toner & essence here" disabled>
+            </li>
+              
+            <li>
+              <span class="stepLabel">Moisturizer:</span>
+              <input type="text" class="stepInput" placeholder="add your moisturizer here" disabled>
+            </li>
+              
+            <li>
+              <span class="stepLabel">Sunscreen:</span>
+              <input type="text" class="stepInput" placeholder="add your sunscreen here" disabled>
+            </li>
+          </ol>
+        </section>
 
+        <section id="nightRoutine">
+          <div id="nightHeader">
+            <h3>Night</h3>
+            <img id="nightImg" src="/static/assets/images/moonIcon.png" alt="Moon Icon">
+          </div>
+            
+          <ol id="nightList">
+            <li>
+              <span class="stepLabel">Cleanser:</span>
+              <input type="text" class="stepInput" placeholder="add your cleanser here" disabled>
+            </li>
+              
+            <li>
+              <span class="stepLabel">Toner & Essence:</span>
+              <input type="text" class="stepInput" placeholder="add your toner & essence here" disabled>
+            </li>
 
+            <li>
+              <span class="stepLabel">Serums & Treatments:</span>
+              <input type="text" class="stepInput" placeholder="add your serums & treatments here" disabled>
+            </li>
+              
+            <li>
+              <span class="stepLabel">Moisturizer:</span>
+              <input type="text" class="stepInput" placeholder="add your moisturizer here" disabled>
+             </li>
+          </ol>
+        </section>
 
-// ------ GOALS WINDOW -------
+        <button id="saveButton"> save </button>
+
+      </div>
+    </section>
+  `, 
+    'routineWindow');
+
+    document.getElementById('editRoutineButton').addEventListener('click', () => {
+      document.querySelectorAll('.stepInput').forEach((input) => {
+        input.classList.add('edit-mode');
+      });
+    });
+
+    setTimeout(() => {
+      const editBtn = document.getElementById('editRoutineButton');
+      const saveBtn = document.getElementById('saveButton');
+      const routineInputs = document.querySelectorAll('.stepInput');
+
+      let isEditing = false; 
+
+      editBtn.addEventListener('click', () => {
+        isEditing = true; 
+
+        routineInputs.forEach(input => {
+          input.disabled = false;
+          input.classList.add('edit-mode');
+        });
+
+        saveBtn.style.display = 'flex';
+      });
+
+      saveBtn.addEventListener('click', () => {
+        isEditing = false;
+    
+        routineInputs.forEach(input => {
+          input.disabled = true;
+          input.classList.remove('edit-mode');
+        });
+
+        saveBtn.style.display = 'none';
+      
+      });
+    }, 0);
+});
+
+// ------- GOALS WINDOW ------- 
 document.getElementById('goalsBubble').addEventListener('click', () => {
   showWindow(`
     <section id="goalContent">
