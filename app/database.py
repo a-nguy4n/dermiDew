@@ -1,6 +1,6 @@
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import logging
 import csv
 from typing import Optional
@@ -87,7 +87,10 @@ async def setup_database(initial_users: dict = None):
                 password VARCHAR(255) NOT NULL,
                 first_name VARCHAR(255),
                 last_name VARCHAR(255),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                total_logins INT NOT NULL DEFAULT 0,
+                last_login_date DATE NULL,
+                current_streak INT NOT NULL DEFAULT 0
             )
         """,
         "sessions": """
@@ -108,8 +111,17 @@ async def setup_database(initial_users: dict = None):
                 allergies TEXT,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
+        """,
+        "user_goals": """
+            CREATE TABLE user_goals (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                goal_type ENUM('daily', 'weekly', 'monthly') NOT NULL,
+                goal_text TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
         """
-
     }
 
     try:
@@ -117,7 +129,7 @@ async def setup_database(initial_users: dict = None):
         cursor = connection.cursor()
 
         # Drop tables in an order that respects foreign key constraints (child tables first)
-        for table in ["skin_profiles", "sessions", "users"]:
+        for table in ["user_goals", "skin_profiles", "sessions", "users"]:
             logger.info(f"Dropping table {table} if it exists...")
             cursor.execute(f"DROP TABLE IF EXISTS {table}")
             connection.commit()
@@ -294,3 +306,118 @@ async def upsert_skin_profile(user_id: int, skin_type: str, skin_tone: str, conc
         if connection and connection.is_connected():
             connection.close()
 
+async def get_goals(user_id: int) -> dict:
+    """Return all goals grouped by type."""
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    cur.execute("SELECT id, goal_type, goal_text FROM user_goals WHERE user_id = %s", (user_id,))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    goals = {'daily': [], 'weekly': [], 'monthly': []}
+    for row in rows:
+        goals[row["goal_type"]].append({"id": row["id"], "text": row["goal_text"]})
+    return goals
+
+async def add_goal(user_id: int, goal_type: str, goal_text: str):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO user_goals (user_id, goal_type, goal_text) VALUES (%s, %s, %s)", (user_id, goal_type, goal_text))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+async def delete_goal(goal_id: int, user_id: int):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM user_goals WHERE id = %s AND user_id = %s", (goal_id, user_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def record_login(user_id: int) -> None:
+    conn = None
+    cur = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+
+        cur.execute(
+            "SELECT last_login_date, current_streak, total_logins "
+            "FROM users "
+            "WHERE id = %s",
+            (user_id,)
+        )
+        row = cur.fetchone()
+        if row is None:
+            conn.rollback()
+            return
+
+        last_login = row["last_login_date"]  
+        prev_streak = row["current_streak"] or 0
+        prev_count = row["total_logins"] or 0
+
+        today = date.today()
+        
+        if last_login is None:
+            new_streak = 1
+        elif last_login == today:
+            new_streak = prev_streak
+        elif last_login == (today - timedelta(days=1)):
+            new_streak = prev_streak + 1
+        else:
+            new_streak = 1
+
+        cur.execute(
+            """
+            UPDATE users
+               SET total_logins    = %s,
+                   current_streak  = %s,
+                   last_login_date = %s
+             WHERE id = %s
+            """,
+            (prev_count + 1, new_streak, today, user_id)
+        )
+
+        conn.commit()
+
+    except Error as err:
+        if conn:
+            conn.rollback()
+        print(f"[record_login] Database error: {err}")
+    finally:
+        if cur:
+            cur.close()
+        if conn and conn.is_connected():
+            conn.close()
+
+
+def get_login_metrics(user_id: int) -> dict:
+    conn = None
+    cur = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+        cur.execute(
+            "SELECT total_logins, current_streak, last_login_date "
+            "FROM users WHERE id = %s",
+            (user_id,)
+        )
+        row = cur.fetchone()
+        cur.close()
+        conn.close()
+        if not row:
+            return {"total_logins": 0, "current_streak": 0, "last_login_date": None}
+        return {
+            "total_logins":    row["total_logins"] or 0,
+            "current_streak":  row["current_streak"] or 0,
+            "last_login_date": row["last_login_date"]
+        }
+    except Error as err:
+        if cur:
+            cur.close()
+        if conn and conn.is_connected():
+            conn.close()
+        print(f"[get_login_metrics] Database error: {err}")
+        return {"total_logins": 0, "current_streak": 0, "last_login_date": None}

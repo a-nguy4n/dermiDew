@@ -31,6 +31,8 @@ from app.database import (
     get_session,
     delete_session,
     create_user,
+    record_login,
+    get_login_metrics
 )
 
 INIT_USERS = {"alice@gmail.com": {"password": "pass123", "first_name": "Alice", "last_name": "Smith"}, "bob@gmail.com": {"password": "pass456", "first_name": "Bob", "last_name": "Jones"}}
@@ -128,7 +130,39 @@ async def login(request: Request):
    response = RedirectResponse(url=f"/user/{email}", status_code=status.HTTP_303_SEE_OTHER)
    response.set_cookie(key="sessionId", value=session_id)
    await create_session(user["id"], session_id)
+
+   from app.database import record_login
+   record_login(user["id"])
+
    return response
+
+@app.get("/login_metrics", response_class=JSONResponse)
+async def login_metrics(request: Request):
+    """
+    Returns JSON like:
+      {
+        "total_logins":    10,
+        "current_streak":   4,
+        "last_login_date": "2025-06-01"
+      }
+    """
+    # 1) Check for sessionId cookie
+    session_id = request.cookies.get("sessionId")
+    if not session_id:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+
+    # 2) Validate session
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Invalid session"})
+
+    # 3) Fetch metrics
+    metrics = get_login_metrics(session["user_id"])
+    # Convert last_login_date to ISO if not None
+    if metrics["last_login_date"] is not None:
+        metrics["last_login_date"] = metrics["last_login_date"].isoformat()
+    return metrics
+
 
 @app.post("/logout")
 async def logout():
@@ -208,9 +242,28 @@ def get_html() -> HTMLResponse:
     return HTMLResponse(content=html.read())
 
 @app.get("/home", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("./app/static/pages/home.html") as html:
-        return HTMLResponse(content=html.read())
+async def home_page(request: Request):
+    session_id = request.cookies.get("sessionId")
+    if not session_id:
+        return RedirectResponse(url="/login")
+
+    session = await get_session(session_id)
+    if not session:
+        return RedirectResponse(url="/login")
+
+    user = await get_user_by_id(session["user_id"])
+    if not user:
+        return RedirectResponse(url="/login")
+
+    home_html = read_html("./app/static/pages/home.html")
+
+    full_name = f"{user.get('first_name', '')} {user.get('last_name', '')}".strip()
+    if not full_name:
+        full_name = "Unknown User"
+
+    home_html = home_html.replace("User's Name Here", full_name)
+
+    return HTMLResponse(content=home_html)
 
 @app.get("/about", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
@@ -235,7 +288,7 @@ async def profile_page(request: Request):
     if not user:
         return RedirectResponse(url="/login")
 
-    from app.database import get_skin_profile  # make sure this is imported
+    from app.database import get_skin_profile 
 
     # Load and personalize static profile.html
     profile_html = read_html("./app/static/pages/profile.html")
@@ -252,11 +305,9 @@ async def profile_page(request: Request):
     profile_html = profile_html.replace("userEmail@somegmail.com", user.get("email", "unknown@example.com"))
     profile_html = profile_html.replace("date account created", created_date)
 
-    # ⬇️ NEW: Load and embed their skin profile data for JS to access
     skin_data = await get_skin_profile(user["id"])
     skin_json = json.dumps(skin_data or {})
 
-    # Inject a <script> tag to expose data to profile.js
     profile_html += f"""
     <script>
         const loadedSkinProfile = {skin_json};
@@ -282,6 +333,43 @@ async def save_profile(request: Request, data: dict = Body(...)):
         data.get("allergies", "")
     )
     return {"message": "Profile saved successfully"}
+
+from app.database import get_goals, add_goal, delete_goal
+
+@app.get("/goals", response_class=JSONResponse)
+async def load_goals(request: Request):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+    
+    goals = await get_goals(session["user_id"])
+    return goals
+
+@app.post("/goals")
+async def save_goal(request: Request, data: dict = Body(...)):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+
+    goal_type = data.get("goal_type")
+    goal_text = data.get("goal_text")
+    if goal_type not in ["daily", "weekly", "monthly"] or not goal_text:
+        return JSONResponse(status_code=400, content={"error": "Invalid input"})
+    
+    await add_goal(session["user_id"], goal_type, goal_text)
+    return {"message": "Goal saved"}
+
+@app.delete("/goals/{goal_id}")
+async def remove_goal(goal_id: int, request: Request):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+    
+    await delete_goal(goal_id, session["user_id"])
+    return {"message": "Goal deleted"}
 
 @app.get("/exploreproducts", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:

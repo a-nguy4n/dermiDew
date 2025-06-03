@@ -371,3 +371,12 @@ body{
 .logBubbleContainer:hover{
     animation-play-state: paused;
 }
+
+nav a.active {
+  background-color: #ADD8E6;
+  color: #1E3F72;
+}
+
+nav a.active:hover {
+  background-color: #ADD8E6;
+}

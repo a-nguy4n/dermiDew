@@ -14,18 +14,6 @@ fetch('/static/assets/navbar/navbar.html')
         link.classList.add('active');
       }
     });
-
-    // Optional: Highlight the Help <span> if its dropdown is selected
-    const helpLink = document.querySelector('#landingHelp a');
-    if (helpLink) {
-      const helpHref = helpLink.getAttribute('href');
-      if (path === helpHref || path.startsWith(helpHref + "/") || path.endsWith(helpHref)) {
-        const helpSpan = document.getElementById('navHelp');
-        if (helpSpan) {
-          helpSpan.classList.add('active');
-        }
-      }
-    }
 });
 
 async function saveProfile() {
