@@ -60,7 +60,7 @@ body{
 
 #streaksBubble{
     order: 1;
-    background-color: #63acfa;
+    background-color: #87C3FF;
     border-radius: 50%;
     width: 12vw; 
     height: 12vw; 
@@ -112,7 +112,7 @@ body{
 
 #currRoutineBubble{
     order: 4;
-    background-color: #7bbcfc;
+    background-color: #5da8f2;
     border-radius: 50%;
     width: 15vw; 
     height: 15vw;
@@ -201,7 +201,7 @@ body{
 }
 
 #logBubble{
-    background-color: #89c3fd;
+    background-color: #66aff9;
     border-radius: 50%;
     width: 15vw;
     height: 15vw;
