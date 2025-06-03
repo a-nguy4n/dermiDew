@@ -54,6 +54,10 @@ function showWindow(contentHTML, customClass = '') {
 }
 
 
+
+
+
+// ------ GOALS WINDOW -------
 document.getElementById('goalsBubble').addEventListener('click', () => {
   showWindow(`
     <section id="goalContent">

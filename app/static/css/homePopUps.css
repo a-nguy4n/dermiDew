@@ -68,8 +68,164 @@
     text-align: left;
     padding-left: 2vw;
 }
+
+/* ------ Routine Bubble Window Content ------ */
+.routineHeader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+
+.routineHeader h2{
+    font-family: "Slackside Regular";
+    font-size: 2.75vw;
+    color: #1B538B;
+    margin: 0%;
+}
+
+.routineHeader p{
+    font-family: "Sarala Regular";
+    font-size: 1vw;
+    font-style: italic;
+    color: #1B538B;
+}
+
+#editRoutineButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vw;
+    cursor: pointer;
+    padding: 0.4vw 1vw;
+    border-radius: 0.5vw;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: 0.5vw;
+}
   
-/* Goal Content */
+#editRoutineButton:hover{
+    background-color: #e6f0ff;
+}
+  
+#editRoutineButton p{
+    margin: 0;
+    font-family: "Sarala Regular";
+    font-size: 1.2vw;
+    color: #1B538B;
+}
+  
+#editRoutineButton img{
+    width: 1vw;
+    height: auto;
+}
+
+.routineBlock{
+    display: flex;
+    justify-content: space-between;
+    gap: 2vw;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#morningRoutine,
+#nightRoutine{
+  flex: 1 1 45%;
+  padding: 1.5vw;
+}
+
+#morningHeader,
+#nightHeader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vw;
+    margin-top: 0.5vw;
+    padding: 0.4vw 1vw;
+    border-radius: 0.5vw;
+}
+
+#morningHeader h3,
+#nightHeader h3{
+    font-size: 1.75vw;
+    color: #297BCE;
+    justify-self: center;
+}
+
+#morningImg,
+#nightImg{
+    width: 1.8vw;
+    height: 1.8vw
+}
+
+#morningList,
+#nightList{
+    list-style-position: inside; 
+    padding-left: 0; 
+    margin: 0;            
+}
+
+#morningList li,
+#nightList li{
+    display: flex;              
+    align-items: center;
+    gap: 0.5vw;
+    margin-bottom: 10%;
+}
+
+.stepLabel{
+    font-weight: bold;
+    margin-right: 0.3vw;
+    font-family: "Sarala Regular";
+    font-size: 1.2vw;
+    color: #1B538B;
+}
+  
+.stepInput{
+    font-family: "Sarala Regular";
+    font-size: 1.1vw;
+    padding: 0.4vw 0.8vw;
+    border: 1px solid #cce4f7;
+    border-radius: 0.4vw;
+    background-color: #edf8ff; 
+    color: #1B538B;
+    width: 60%; 
+}
+  
+.stepInput::placeholder{
+    color: #87b9da; 
+    font-style: italic;
+}
+
+.stepInput.edit-mode{
+    outline: 2px solid #79baff;
+    box-shadow: 0 0 8px #b6dcff;
+    background-color: #f0faff;
+    transition: all 0.3s ease;
+}
+
+#saveButton{
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    bottom: 1.5vw;
+    right: 1.5vw;
+    background-color: #07ac67;
+    color: white;
+    padding: 0.1vw 1.5vw;  
+    border-radius: 30px;  
+    font-family: "Sarala Regular";
+    font-size: 1vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+    display: none;
+}
+  
+#saveButton:hover{
+    background-color: #0d965d;
+}
+
+/* ------ Goal Bubble Window Content ------ */
 #goalContent{
     display: flex;
     flex-direction: column;
@@ -140,7 +296,6 @@
     pointer-events: none;
     display: inline-block;
 }
-
   
 .goalBlock h3{
     margin: 0 0 0.5vw 0;
