@@ -54,7 +54,34 @@ function showWindow(contentHTML, customClass = '') {
   sessionStorage.setItem('windowVisible', 'true');
 }
 
-// ------- ROUTINE WINDOW ------- 
+// ------- STREAK COUNTER ------- 
+window.addEventListener('load', async () => {
+  try {
+    const res = await fetch('/login_metrics',{
+      method: 'GET',
+      credentials: 'include'
+    });
+    if (!res.ok) {
+      console.error('Could not load login metrics:', res.statusText);
+      return;
+    }
+    const data = await res.json();
+    const streakElem = document.getElementById('streakCount');
+    if (streakElem) {
+      if (data.current_streak == '1') {
+        streakElem.textContent = data.current_streak + ' day';
+      } else {
+        streakElem.textContent = data.current_streak + ' days';
+      }
+    }
+  } 
+  
+  catch (err){
+    console.error('Error fetching streak count:', err);
+  }
+});
+
+// -------------- ROUTINE WINDOW -------------- 
 document.getElementById('currRoutineBubble').addEventListener('click', () => {
   showWindow(`
     <section id="currRoutineContent">
@@ -170,7 +197,7 @@ document.getElementById('currRoutineBubble').addEventListener('click', () => {
     }, 0);
 });
 
-// ------- GOALS WINDOW ------- 
+// --------------  GOALS WINDOW -------------- 
 document.getElementById('goalsBubble').addEventListener('click', () => {
   showWindow(`
     <section id="goalContent">
@@ -365,29 +392,222 @@ function attachNewEntryListeners(){
     });
 }
 
-// ------- STREAK COUNTER ------- 
-window.addEventListener('load', async () => {
-  try {
-    const res = await fetch('/login_metrics', {
-      method: 'GET',
-      credentials: 'include'
+// --------------  PRODUCT LOG windows -------------- 
+
+// **** ADD REVIEW WINDOW ****  
+document.getElementById('addLogBtn').addEventListener('click', () => {
+  showWindow(`
+    <section id="reviewLogFormContent"> 
+      <h2> Product Review Log Entry </h2>
+
+      <form id="productRevForm">
+        <div class="formRow">
+          <label for="productName"> Product Name: </label>
+          <input type="text" id="productName" name="productName" required> 
+        </div>
+
+        <div class="formRow">
+          <label for="productType"> Product Type:</label>
+          <select id="productType" name="productType" required>
+              <option value=""> --- Click to select type --- </option>
+              <option value="cleanser">Cleanser</option>
+              <option value="toner">Toner</option>
+              <option value="serum">Serum</option>
+              <option value="moisturizer">Moisturizer</option>
+              <option value="sunscreen">Sunscreen</option>
+              <option value="treatment">Treatment (e.g., exfoliant, retinol)</option>
+              <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="formRow">
+          <div class="dateGroup">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required>
+          </div>
+
+          <div class="dateGroup">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate">
+          </div>
+        </div>
+        
+        <div class="formRow">
+          <label for="productRating">Effectiveness Rating:</label>
+          <select id="productRating" name="productRating" required>
+              <option value="">--- Click to select rating --- </option>
+              <option value="5">★★★★★ - Excellent</option>
+              <option value="4">★★★★☆ - Good</option>
+              <option value="3">★★★☆☆ - Average</option>
+              <option value="2">★★☆☆☆ - Poor</option>
+              <option value="1">★☆☆☆☆ - Irritating or Ineffective</option>
+          </select>
+        </div>
+
+        <div class="formRow">
+          <label for="reaction">Did you experience any skin reactions?</label>
+          <textarea id="reaction" name="reaction" rows="3" placeholder="Redness, breakouts, dryness, etc."></textarea>
+        </div>
+
+        <div class="formRow">
+          <label for="notes">Additional Notes:</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Texture, scent, layering, repurchase plans, etc."></textarea>
+        </div>
+
+        <div class="formActions">
+          <input type="submit" value="Log New Entry">
+        </div>
+      </form>
+
+      <div id="successMsg" class="hiddenBanner"></div>
+
+    </section>
+
+  `, 'routineWindow');
+});
+
+// log success notif popup + saving content 
+document.addEventListener('submit', function (e){
+  if (e.target.id === 'productRevForm') {
+    e.preventDefault();
+
+    // -- saving content 
+    const logs = JSON.parse(localStorage.getItem('reviewLogs')) || [];
+
+    const newLog = {
+      name: document.getElementById('productName').value,
+      type: document.getElementById('productType').value,
+      startDate: document.getElementById('startDate').value,
+      endDate: document.getElementById('endDate').value,
+      rating: parseInt(document.getElementById('productRating').value),
+      reaction: document.getElementById('reaction').value,
+      notes: document.getElementById('notes').value
+    };
+
+    logs.push(newLog);
+    localStorage.setItem('reviewLogs', JSON.stringify(logs));
+
+    // -- success message 
+    const msg = document.getElementById('successMsg');
+    msg.innerHTML = `Log successfully saved! <br> 
+                    <a href="#" id="viewLogsLink"> View Past Logs </a>`;
+    msg.classList.remove('hiddenBanner');
+    msg.classList.add('visibleBanner');
+
+    setTimeout(() => {
+      msg.classList.remove('visibleBanner');
+      msg.classList.add('hiddenBanner');
+    }, 7000);
+
+    document.getElementById('viewLogsLink').addEventListener('click', function (ev){
+      ev.preventDefault();
+      document.getElementById('entryBtn').click();
     });
-    if (!res.ok) {
-      console.error('Could not load login metrics:', res.statusText);
-      return;
-    }
-    const data = await res.json();
-    const streakElem = document.getElementById('streakCount');
-    if (streakElem) {
-      if (data.current_streak == '1') {
-        streakElem.textContent = data.current_streak + ' day';
-      } else {
-        streakElem.textContent = data.current_streak + ' days';
-      }
-    }
-  } 
-  
-  catch (err){
-    console.error('Error fetching streak count:', err);
   }
 });
+
+
+// **** PAST LOGS WINDOW ****  
+document.getElementById('entryBtn').addEventListener('click', () => {
+  const logs = JSON.parse(localStorage.getItem('reviewLogs')) || [];
+
+  const logEntriesHTML = logs.map(log => `
+    <div class="pastEntryBox">
+      <p class="logProductName">${log.name}</p>
+      <p class="logProductType">${log.type}</p>
+      <p class="logProductDates">${log.startDate} - ${log.endDate || 'Present'}</p>
+      <p class="logProductRating">${'★'.repeat(log.rating)}${'☆'.repeat(5 - log.rating)}</p>
+
+      <div class="logComments" onclick="toggleTooltip(this)"> 
+        view comments 
+        <div class="commentToolTip">
+          <section class="toolTipSection">
+            <strong> Skin Reactions: </strong>
+            <p>${log.reaction || 'None'}</p>
+          </section>
+
+          <section class="toolTipSection">
+            <strong> Additional Notes: </strong>
+            <p>${log.notes || 'None'}</p>
+          </section>
+        </div>
+        
+      </div>
+
+    </div>
+  `).join('');
+
+  showWindow(`
+    <section id="pastLogContent">
+      <h2> My Past Product Review Logs </h2>
+
+      <div class="logSearchContainer">
+        <input type="text" class="searchInput" id="logSearchInput" placeholder="🔍 Search for log entry by product name...">
+      </div>
+
+      <div class="logContainer">
+        ${logEntriesHTML || '<p id="noLogMsg"> No logs yet. Start by adding one!</p>'}
+      </div>
+    </section>
+  `, 'routineWindow');
+
+  // search bar functionality
+  setTimeout(() =>{
+    const searchInput = document.querySelector('.searchInput');
+    const logContainer = document.querySelector('.logContainer');
+    
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+    
+      const filteredLogs = logs.filter(log =>
+        log.name.toLowerCase().includes(query)
+      );
+    
+      logContainer.innerHTML = filteredLogs.map(log => `
+        <div class="pastEntryBox">
+          <p class="logProductName">${log.name}</p>
+          <p class="logProductType">${log.type}</p>
+          <p class="logProductDates">${log.startDate} - ${log.endDate || 'Present'}</p>
+          <p class="logProductRating">${'★'.repeat(log.rating)}${'☆'.repeat(5 - log.rating)}</p>
+          
+          <div class="logComments" onclick="toggleTooltip(this)"> 
+            view comments 
+
+            <div class="commentToolTip">
+              <section class="toolTipSection">
+                <strong> Skin Reactions: </strong>
+                <p>${log.reaction || 'None'}</p>
+              </section>
+
+              <section class="toolTipSection">
+                <strong> Additional Notes: </strong>
+                <p>${log.notes || 'None'}</p>
+              </section>
+            </div>
+
+          </div>
+
+        </div>
+      `).join('') || '<p id="noResultsMsg"> No logs match your search. </p>';
+    });  
+  }, 0);
+});
+
+
+// 'view comments' tool tip toggling functionality 
+function toggleTooltip(el) {
+  const tooltip = el.querySelector('.commentToolTip');
+  const isVisible = tooltip.style.display === 'block';
+  document.querySelectorAll('.commentToolTip').forEach(t => t.style.display = 'none'); 
+  tooltip.style.display = isVisible ? 'none' : 'block';
+}
+
+window.addEventListener('click', function (e){
+  const isCommentToggle = e.target.closest('.logComments');
+  const isTooltip = e.target.closest('.commentTooltip');
+
+  if (!isCommentToggle && !isTooltip){
+    document.querySelectorAll('.commentTooltip').forEach(t => t.style.display = 'none');
+  }
+});
+
