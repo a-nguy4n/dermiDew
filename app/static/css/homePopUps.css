@@ -63,8 +63,10 @@
     top: 1vw;
     right: 1vw;
     cursor: pointer;
+    z-index: 10;
 }
 
+/* Shared window styling for content area */
 .windowContent{
     display: flex;
     flex-direction: column;

@@ -52,6 +52,14 @@ function showWindow(contentHTML, customClass = '') {
   contentContainer.innerHTML = contentHTML;
   windowPopup.style.display = 'block';
   sessionStorage.setItem('windowVisible', 'true');
+
+  const exitBtn = windowPopup.querySelector('.windowExit');
+  if(exitBtn){
+    exitBtn.addEventListener('click', function () {
+      windowPopup.style.display = 'none';
+      sessionStorage.removeItem('windowVisible');
+    });
+  }
 }
 
 // ------- STREAK COUNTER ------- 
