@@ -20,9 +20,10 @@ fetch('/static/assets/navbar/navbar.html')
 // prevent default general window from showing 
 window.addEventListener('load', () => {
   const windowPopup = document.getElementById('homeWindow');
-  if (sessionStorage.getItem('windowVisible') === 'true') {
+  if(sessionStorage.getItem('windowVisible') === 'true'){
     windowPopup.style.display = 'block';
-  } else {
+  } 
+  else{
     windowPopup.style.display = 'none';
   }
 });
@@ -39,15 +40,15 @@ function showWindow(contentHTML, customClass = '') {
   const windowContent = windowPopup.querySelector('.windowContent');
   const contentContainer = windowPopup.querySelector('#windowInnerContent');
 
-  // Reset previous styles
+  // resetting previous styles
   windowContent.className = 'windowContent';
 
-  // Add a custom class for styling (e.g., 'goalsWindow')
-  if (customClass) {
+  // adding a custom class for styling 
+  if(customClass) {
     windowContent.classList.add(customClass);
   }
 
-  // Inject the HTML and show the popup
+  // injecting the HTML and rendering the popup
   contentContainer.innerHTML = contentHTML;
   windowPopup.style.display = 'block';
   sessionStorage.setItem('windowVisible', 'true');
@@ -173,22 +174,17 @@ document.getElementById('currRoutineBubble').addEventListener('click', () => {
 document.getElementById('goalsBubble').addEventListener('click', () => {
   showWindow(`
     <section id="goalContent">
-      <h2 style="
-        color: #285d9b;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        text-align: center;
-      ">
+      <h2>
         My Skincare Goals
       </h2>
-      <div id="goalsContainer" style="display: flex; gap: 1rem;"></div>
+      <div id="goalsContainer"></div>
     </section>
   `, 'goalsWindow');
 
   loadGoals();
 });
 
-
+// fetching user's goals from endpoint
 async function loadGoals(){
   const goalsContainer = document.getElementById('goalsContainer');
   if (!goalsContainer) return;
@@ -216,7 +212,6 @@ async function loadGoals(){
   attachDeleteListeners();
   attachNewEntryListeners();
 }
-
 
 function createGoalBlock(type, goalsArray){
   const block = document.createElement('div');
@@ -268,7 +263,7 @@ function createGoalBlock(type, goalsArray){
 
   const newCb = document.createElement('input');
   newCb.type = 'checkbox';
-  newCb.disabled = true;
+  newCb.disabled = false;
   newCb.style.marginRight = '0.5rem';
   newCb.style.width = '1rem';
   newCb.style.height = '1rem';
@@ -293,6 +288,7 @@ function createGoalBlock(type, goalsArray){
   return block;
 }
 
+// deleting goals with checkboxes 
 function attachDeleteListeners(){
   document
     .querySelectorAll('.goalItem input[type="checkbox"]')
@@ -369,6 +365,7 @@ function attachNewEntryListeners(){
     });
 }
 
+// ------- STREAK COUNTER ------- 
 window.addEventListener('load', async () => {
   try {
     const res = await fetch('/login_metrics', {
