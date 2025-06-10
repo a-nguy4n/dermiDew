@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const recommendedProducts = getRecommendations(simulatedSkinType, simulatedSkinDiagnosis);
 
   let productsHtml = `
-    <h2>Product Recommendations</h2>
+    <h2 id="productRecHeader">Product Recommendations</h2>
     <p class="analysis-summary">Based on your simulated skin analysis (Skin Type: <strong>${simulatedSkinType}</strong>, Diagnosis: <strong>${simulatedSkinDiagnosis}</strong>), here are some product suggestions:</p>
     <div class="product-recommendation-list">
   `;
