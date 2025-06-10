@@ -6,6 +6,13 @@
     font-style: normal;
 }
 
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
 .landingSectionThree{
     position: relative;
     width: 100vw;
@@ -59,6 +66,24 @@
     background-color: #FFCC00;
     border-radius: 10px;
 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    padding: 1vw; 
+}
+
+.workCard p {
+    font-family: "Sarala Regular";
+    line-height: 1.5;
+    color: white;
+}
+
+.workCard strong {
+    font-family: "Sarala Regular";
+    line-height: 1.5;
+    color: white;
+    font-size: 1.7vw;
 }
 
 .numberBadge{
