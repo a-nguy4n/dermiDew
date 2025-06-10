@@ -649,3 +649,30 @@ input[type="submit"]:hover{
     cursor: pointer;
     transition: background-color 0.3s;
   }
+
+
+/* ------- Skin Status Content ------- */
+
+#statusContent h2{
+    font-family: "Slackside One";
+    font-size: 3vw;
+    color: #1B538B;
+  }
+
+  .status-container{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;           
+    gap: 5%;                    
+    margin-top: 4vw;               
+  }
+
+  .progressImage{
+    width: 15vw;
+      height: 18vw;
+      background-color: #7dc9f9;
+      border: 2px solid hsla(212, 98%, 80%, 0.835);
+      border-radius: 8px;
+      padding: 2%;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  }

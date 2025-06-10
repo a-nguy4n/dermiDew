@@ -803,3 +803,20 @@ function blobToBase64(blob) {
     reader.readAsDataURL(blob);
   });
 }
+
+
+// ---------- skin status window ------------
+document.getElementById('skinStatusBubble').addEventListener('click', () => {
+  showWindow(`
+    <section id="statusContent">
+      <h2>My Skincare Status</h2>
+      
+      <div class="status-container">
+        <div class="progressImage"> </div>
+        <div class="progressImage"> </div>
+        <div class="progressImage"> </div>
+      </div>
+      
+    </section>
+  `, 'routineWindow');
+});
