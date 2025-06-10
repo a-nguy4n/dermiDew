@@ -78,7 +78,6 @@ async def setup_database(initial_users: dict = None):
     connection = None
     cursor = None
 
-    # Define table schemas for user and session management, plus devices and wardrobe.
     table_schemas = {
         "users": """
             CREATE TABLE users (
@@ -159,21 +158,17 @@ async def setup_database(initial_users: dict = None):
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        # Drop tables in an order that respects foreign key constraints (child tables first)
         for table in ["product_reviews", "current_routine", "user_goals", "skin_profiles", "sessions", "users"]:
             logger.info(f"Dropping table {table} if it exists...")
             cursor.execute(f"DROP TABLE IF EXISTS {table}")
             connection.commit()
-
-        # Create tables one by one
+   
         for table_name, create_query in table_schemas.items():
             logger.info(f"Creating table {table_name}...")
             cursor.execute(create_query)
             connection.commit()
             logger.info(f"Table {table_name} created successfully")
 
-        # Insert initial users if provided
-        # Insert initial users if provided
         if initial_users:
             insert_query = "INSERT INTO users (email, password, first_name, last_name) VALUES (%s, %s, %s, %s)"
             for email, user_info in initial_users.items():

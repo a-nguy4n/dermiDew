@@ -3,7 +3,6 @@ fetch('/static/assets/navbar/navbar.html')
   .then(data => {
     document.getElementById('navbarContainer').innerHTML = data;
 
-    // Active Link Highlighting Logic AFTER navbar loads
     const path = window.location.pathname;
 
     document.querySelectorAll('nav a').forEach(link => {
@@ -682,7 +681,7 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
     </section>
   `, 'routineWindow');
 
-  // Logic to fetch and display analysis results
+  // logic to fetch and display analysis results
   const imageUrl = "https://plus.unsplash.com/premium_photo-1683140815244-7441fd002195?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWNuZXxlbnwwfHwwfHx8MA%3D%3D"; // Replace with your actual image source
   // const imageUrl = "http://192.168.1.60/photo"; // Example for local camera feed if applicable
 
@@ -697,7 +696,7 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
     const imageBlob = await imageResponse.blob();
     const imageBase64 = await blobToBase64(imageBlob);
     
-    // UPDATED query to ask for all required information and request JSON format
+    // updating query to ask for all required information and request JSON format
     const queryText = `Analyze the skin in the image and provide the following information in a JSON format:
 {
   "description": "A brief description of the skin in the image.",
@@ -726,7 +725,7 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
       body: JSON.stringify({ 
         query: queryText,
         image: imageBase64,
-        imageUrl: imageUrl // Sending imageUrl for potential backend logging or processing
+        imageUrl: imageUrl 
       })
     });
 
@@ -737,17 +736,12 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
     const data = await response.json();
     console.log("Raw Analysis Data from Backend:", data);
 
-    // Extract the string from the 'response' key
     let rawJsonResponseString = data.response; 
 
-    // Remove the markdown code block delimiters
-    // It looks for ```json (or just ```) at the start and ``` at the end.
     rawJsonResponseString = rawJsonResponseString.replace(/^```json\s*|```$/g, '').trim();
 
-    // Now, parse the cleaned JSON string
     const analysisResults = JSON.parse(rawJsonResponseString); 
 
-    // Populate the analysis results into the displayed window
     document.querySelector('.scan-date').textContent = `last scan was: ${new Date().toLocaleDateString()}`;
     document.getElementById('skinType').textContent = analysisResults.skinType || 'N/A';
     document.getElementById('hydrationLevel').textContent = analysisResults.hydrationLevel || 'N/A';
@@ -774,16 +768,13 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
     }
     document.getElementById('routineContent').innerHTML = routineHtml;
 
-
-    // Re-attach event listener for 'get new analysis' button if it's dynamic
     document.getElementById('newAnalysisButton').addEventListener('click', () => {
-      // You can call the whole skin analysis process again or specific parts
-      document.getElementById('skinAnalysisBubble').click(); // Simulates clicking the main bubble again
+      document.getElementById('skinAnalysisBubble').click(); 
     });
 
-  } catch (error) {
+  } catch (error){
     console.error('Error during skin analysis:', error);
-    // Update the UI to show an error message
+
     document.querySelector('.scan-date').textContent = 'last scan was: Error';
     document.getElementById('skinType').textContent = 'Error';
     document.getElementById('hydrationLevel').textContent = 'Error';
@@ -792,7 +783,7 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
   }
 });
 
-function blobToBase64(blob) {
+function blobToBase64(blob){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => {

@@ -52,9 +52,8 @@ async def lifespan(app: FastAPI):
     Lifespan context manager for managing application startup and shutdown.
     Handles database setup and cleanup in a more structured way.
     """
-    # Startup: Setup resources
     try:
-        await setup_database(INIT_USERS)  # Make sure setup_database is async
+        await setup_database(INIT_USERS) 
         print("Database setup completed")
         yield
     finally:
@@ -68,7 +67,7 @@ class User(BaseModel):
 
 # Sessions
 class Session(BaseModel):
-    id: str  # session id (UUID as string, for example)
+    id: str  # session id 
     user_id: int
 
 def read_html(file_path: str) -> str:

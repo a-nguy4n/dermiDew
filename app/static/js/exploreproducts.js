@@ -1,6 +1,4 @@
-// --- Product Recommendation Logic ---
 
-// Dummy product database (replace with real data fetching)
 const productDatabase = {
   // Cleansers
   cleanser: [
@@ -65,7 +63,7 @@ function getRecommendations(skinType, skinDiagnosis) {
   if (recommendations.cleanser.length === 0) recommendations.cleanser = productDatabase.cleanser.slice(0, 2);
 
 
-  // Toners - prioritize active ingredients for concerns
+  // Toners
   if (skinDiagnosis.includes("Acne") || skinType.includes("Oily")) {
     recommendations.toner = productDatabase.toner.filter(p => p.name.includes("BHA") || p.name.includes("Witch Hazel"));
   } else if (skinType.includes("Dry") || skinDiagnosis.includes("Redness") || skinType.includes("Sensitive")) {
@@ -101,7 +99,7 @@ function getRecommendations(skinType, skinDiagnosis) {
   if (recommendations.moisturizer.length === 0) recommendations.moisturizer = productDatabase.moisturizer.slice(0, 2);
 
 
-  // Sunscreens (generally universal, but can prioritize certain features)
+  // Sunscreens
   recommendations.sunscreen = productDatabase.sunscreen.filter(p => isSkinTypeMatch(p.skinType, skinType) || p.skinType.includes("All Skin Types"));
   if (skinDiagnosis.includes("Acne-prone")) {
     recommendations.sunscreen = recommendations.sunscreen.filter(p => p.name.includes("EltaMD UV Clear"));
@@ -117,13 +115,8 @@ function getRecommendations(skinType, skinDiagnosis) {
 document.addEventListener('DOMContentLoaded', () => {
   const recommendationsContainer = document.getElementById('productRecommendationsContainer');
 
-  // --- SIMULATE SKIN ANALYSIS RESULTS ---
-  // In a real app, you'd get this from your actual skin analysis or saved user data.
-  // For now, these are fixed for demonstration.
   const simulatedSkinType = "Combination";
   const simulatedSkinDiagnosis = "Mild acne, Redness";
-  // --- END SIMULATION ---
-
   const recommendedProducts = getRecommendations(simulatedSkinType, simulatedSkinDiagnosis);
 
   let productsHtml = `
