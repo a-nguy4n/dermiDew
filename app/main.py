@@ -16,7 +16,7 @@ from openai import OpenAI
 
 load_dotenv()
 
-client = OpenAI(api_key='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')
+client = OpenAI()
 
 DB_HOST = os.getenv("MYSQL_HOST")
 DB_USER = os.getenv("MYSQL_USER")
