@@ -137,6 +137,21 @@ async def setup_database(initial_users: dict = None):
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
+        """,
+        "product_reviews": """
+            CREATE TABLE product_reviews (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                product_name VARCHAR(255) NOT NULL,
+                product_type VARCHAR(50) NOT NULL,
+                start_date DATE NOT NULL,
+                end_date DATE NULL,
+                rating TINYINT NOT NULL,
+                reaction TEXT,
+                notes TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
         """
     }
 
@@ -145,7 +160,7 @@ async def setup_database(initial_users: dict = None):
         cursor = connection.cursor()
 
         # Drop tables in an order that respects foreign key constraints (child tables first)
-        for table in ["user_goals", "skin_profiles", "sessions", "users"]:
+        for table in ["product_reviews", "current_routine", "user_goals", "skin_profiles", "sessions", "users"]:
             logger.info(f"Dropping table {table} if it exists...")
             cursor.execute(f"DROP TABLE IF EXISTS {table}")
             connection.commit()
@@ -514,3 +529,52 @@ async def upsert_current_routine(
     conn.commit()
     cur.close()
     conn.close()
+
+async def add_product_review(
+    user_id:      int,
+    product_name: str,
+    product_type: str,
+    start_date:   str,            # ISO “YYYY-MM-DD”
+    end_date:     Optional[str],  # ISO or None
+    rating:       int,
+    reaction:     str,
+    notes:        str
+) -> None:
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        """
+        INSERT INTO product_reviews
+            (user_id, product_name, product_type, start_date, end_date, rating, reaction, notes)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (user_id, product_name, product_type, start_date, end_date, rating, reaction, notes)
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+async def get_product_reviews(user_id: int) -> list[dict]:
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    cur.execute(
+    """
+    SELECT
+      product_name   AS name,
+      product_type   AS type,
+      DATE_FORMAT(start_date, '%Y-%m-%d') AS startDate,
+      DATE_FORMAT(end_date,   '%Y-%m-%d') AS endDate,
+      rating,
+      reaction,
+      notes
+    FROM product_reviews
+    WHERE user_id = %s
+    ORDER BY created_at DESC
+    """,
+    (user_id,)
+)
+
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows

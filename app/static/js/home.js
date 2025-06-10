@@ -496,25 +496,30 @@ document.getElementById('addLogBtn').addEventListener('click', () => {
 });
 
 // log success notif popup + saving content 
-document.addEventListener('submit', function (e){
+document.addEventListener('submit', async function (e){
   if (e.target.id === 'productRevForm') {
     e.preventDefault();
 
     // -- saving content 
-    const logs = JSON.parse(localStorage.getItem('reviewLogs')) || [];
-
-    const newLog = {
-      name: document.getElementById('productName').value,
-      type: document.getElementById('productType').value,
-      startDate: document.getElementById('startDate').value,
-      endDate: document.getElementById('endDate').value,
-      rating: parseInt(document.getElementById('productRating').value),
-      reaction: document.getElementById('reaction').value,
-      notes: document.getElementById('notes').value
-    };
-
-    logs.push(newLog);
-    localStorage.setItem('reviewLogs', JSON.stringify(logs));
+    try {
+      const res = await fetch('/product_reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name:      document.getElementById('productName').value,
+          type:      document.getElementById('productType').value,
+          startDate: document.getElementById('startDate').value,
+          endDate:   document.getElementById('endDate').value,
+          rating:    parseInt(document.getElementById('productRating').value, 10),
+          reaction:  document.getElementById('reaction').value,
+          notes:     document.getElementById('notes').value
+        })
+      });
+      if (!res.ok) throw new Error(await res.text());
+    } catch (err) {
+      console.error('Failed to save review:', err);
+    }
 
     // -- success message 
     const msg = document.getElementById('successMsg');
@@ -537,9 +542,18 @@ document.addEventListener('submit', function (e){
 
 
 // **** PAST LOGS WINDOW ****  
-document.getElementById('entryBtn').addEventListener('click', () => {
-  const logs = JSON.parse(localStorage.getItem('reviewLogs')) || [];
-
+document.getElementById('entryBtn').addEventListener('click', async () => {
+  let logs = [];
+try {
+  const res = await fetch('/product_reviews', {
+    method: 'GET',
+    credentials: 'include'
+  });
+  if (!res.ok) throw new Error(res.statusText);
+  logs = await res.json();
+} catch (err) {
+  console.error('Failed to load past logs:', err);
+}
   const logEntriesHTML = logs.map(log => `
     <div class="pastEntryBox">
       <p class="logProductName">${log.name}</p>

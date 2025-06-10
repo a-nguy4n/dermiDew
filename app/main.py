@@ -37,7 +37,9 @@ from app.database import (
     record_login,
     get_login_metrics,
     get_current_routine,
-    upsert_current_routine
+    upsert_current_routine,
+    add_product_review,
+    get_product_reviews
 )
 
 INIT_USERS = {"alice@gmail.com": {"password": "pass123", "first_name": "Alice", "last_name": "Smith"}, "bob@gmail.com": {"password": "pass456", "first_name": "Bob", "last_name": "Jones"}}
@@ -460,6 +462,39 @@ async def upsert_current_routine(
     conn.commit()
     cur.close()
     conn.close()
+
+@app.post("/product_reviews")
+async def save_product_review(request: Request, data: dict = Body(...)):
+    # 1) auth
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+    user_id = session["user_id"]
+
+    # 2) write to DB
+    await add_product_review(
+        user_id,
+        data["name"],
+        data["type"],
+        data["startDate"],
+        data.get("endDate"),
+        data["rating"],
+        data.get("reaction", ""),
+        data.get("notes", "")
+    )
+
+    return {"message": "Review saved successfully"}
+
+@app.get("/product_reviews", response_class=JSONResponse)
+async def load_product_reviews(request: Request):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+    reviews = await get_product_reviews(session["user_id"])
+    return reviews
+
 
 @app.get("/exploreproducts", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
