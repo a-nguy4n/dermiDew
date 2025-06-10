@@ -589,4 +589,63 @@ input[type="submit"]:hover{
     margin-bottom: 0;
 }
   
+/* ------- Skin Analysis Content ------- */
+
+#analysisContent h2{
+    font-family: "Slackside One";
+    font-size: 3vw;
+    color: #1B538B;
+}
+
+.analysis-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 5%; 
+  }
   
+  .scan-overview{
+    flex: 1;
+  }
+  
+  .vertical-divider{
+    width: 1.5px;
+    background-color: #c4d7f5;
+    height: 30vw; 
+    align-self: stretch; 
+    margin-top: 2%;
+  }
+  
+  .routine-recommendation{
+    flex: 1;
+  }
+  
+  .analysis-container h3{
+    font-family: "Sarala Bold";
+    font-size: 1.5vw;
+    color: #225a91;
+  }
+
+  .analysis-container p{
+    font-family: "Sarala Regular";
+    font-size: 1.25vw;
+    color: #2b69a6;
+  }
+
+  .scan-date{
+    color: gray !important;
+    font-size: 1vw;
+  }
+
+  #newAnalysisButton{
+    align-self: center;
+    padding: 0.5vw 1vw;
+    font-size: 1.2vw;
+    font-family: "Sarala Regular";
+    background-color: #519be5;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
