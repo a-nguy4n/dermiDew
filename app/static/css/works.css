@@ -1,0 +1,162 @@
+/* ----------  LANDING SECTION THREE: HOW DERMIDEW WORKS  ---------- */
+@font-face{
+    font-family: "Slackside One";
+    src: url("/static/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.landingSectionThree{
+    position: relative;
+    width: 100vw;
+}
+
+#workSection h2{
+    color: #519CE8;
+    letter-spacing: 2px;
+    margin-left: 4%;
+}
+
+#workSection span{
+    color: #FFCC00;
+}
+
+.cardCarousel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.cardView{
+    width: calc(3 * ((100vw - 4vw) / 3) + 8vw);
+    overflow: hidden;
+    position: relative;
+}
+
+.cardTrack{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4vw;
+    width: fit-content;
+    transition: transform 0.5s ease;
+ }
+  
+
+.cardTrack::-webkit-scrollbar{
+    display: none;
+}
+
+.workCard{
+    position: relative;
+    margin: 2% 0%;
+    width: 22vw;
+    height: 26vw;
+    background-color: #FFCC00;
+    border-radius: 10px;
+
+}
+
+.numberBadge{
+    font-family: "Slackside One";
+    font-size: 3.75vw;
+    color: white;
+    background-color: #529BE6;
+    border-radius: 50%;
+
+    width: 3.65vw;
+    height: 3.5vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3.5%;
+
+    position: absolute;
+    top: -1.5vw;  
+    left: -1.5vw;
+}
+
+.arrow{
+    width: 1.5vw;
+    height: 1.5vw;
+    border: solid #1874d1; 
+    border-width: 0 0.9vw 0.6vw 0;
+    display: inline-block;
+    padding: 0.4vw;
+    transform: rotate(135deg);
+    cursor: pointer;
+    z-index: 1;
+    margin: 4.5%;
+}
+
+#rightArrow{
+    transform: rotate(-45deg);
+}
+  
+.arrow:hover{
+    border: solid #87C1FB; 
+    border-width: 0 0.9vw 0.6vw 0;
+}
+
+.carouselDots{
+    display: flex;
+    justify-content: center;
+    gap: 3%;
+}
+  
+.dot{
+    width: 0.75vw;
+    height: 0.75vw;
+    border: 1px solid #186DC3;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+  
+.dot.active{
+    background-color: #87C1FB;
+}
+
+.worksDecor{
+    display: flex;
+    position: relative;
+}
+
+#worksDecorOne{
+    position: absolute;
+    width: 3vw;
+    bottom: 37vw;
+    right: 45vw;
+    z-index: 1; 
+}
+
+#worksDecorTwo{
+    position: absolute;
+    width: 10vw;
+    top: -1vw;
+    left: -3vw;
+    z-index: 1; 
+}
+
+#worksDecorThree{
+    position: absolute;
+    width: 10vw;
+    bottom: 28vw;
+    right: -2vw;
+    z-index: 1; 
+}
+
+#worksDecorFour{
+    position: absolute;
+    width: 5vw;
+    top: -2vw;
+    right: 20vw;
+    z-index: 1; 
+}
+
+

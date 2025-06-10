@@ -1,0 +1,285 @@
+@font-face{
+    font-family: "Slackside One";
+    src: url("/static/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: "Sarala Bold";
+    src: url("/static/assets/fonts/Sarala-Bold.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+}
+
+section{
+    height: 55vw;
+    scroll-snap-align: start;
+}
+
+.landingContainer{
+    position: relative;
+}
+
+.landingContainer h2{
+    font-family: "Slackside One";
+    font-size: 4vw;
+    letter-spacing: 1px;
+}
+
+/* ----------  LANDING SECTION ONE ---------- */
+.landingSectionOne{
+    position: relative;
+}
+
+.introBody{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10%
+}
+
+.introBody h1{
+    font-family: "Slackside One";
+    font-size: 10vw;
+    color: #186DC3;
+    margin: 0;
+}
+
+#sunLogo{
+    width: 17vw;
+    margin-bottom: -4vw;
+}
+
+#dewIcon{
+    width: 4.25vw;
+}
+
+.accountButtons{
+    font-family: "Sarala Regular";
+    display: flex;
+    justify-content: space-around;
+    width: 35%;
+    margin: 3%;
+}
+
+.accountButtons a{
+    border: 1px solid #FFCC00;
+    border-radius: 17px;
+    padding: 1% 5%;
+    text-decoration: none;
+    color: white;
+    background-color: #FFCC00;
+    font-size: 1.5vw;
+}
+
+.accountButtons a:hover {
+    border: 1px solid #f5ba3d;
+    background-color: #f5ba3d;
+    transform: scale(1.05);
+}
+
+#tagLine{
+    font-family: "Slackside One";
+    font-size: 2.3vw;
+    color: #4e8ecf;
+}
+
+.landingNav{
+    position: relative;
+    font-family: "Sarala Bold";
+    display: flex;
+    flex-wrap: wrap;
+    bottom: 3vw;
+}
+
+#homeBlob{
+    position: absolute;
+    bottom: 35vw;
+    right: 12vw;
+
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+
+    font-family: "Sarala Bold";
+    font-size: 1.35vw;
+    background-color: #87C1FB;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 2px;
+
+    border-radius: 28% 68% 18% 73% / 35% 57% 24% 49%;
+    width: 10vw;
+    height: 9vw;
+}
+
+#aboutBlob{
+    position: absolute;
+    bottom: 27vw;
+    right: -2vw;
+
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+
+    font-family: "Sarala Bold";
+    font-size: 1.35vw;
+    background-color: #87C1FB;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 2px;
+
+    border-radius: 95% 5% 14% 86% / 72% 56% 44% 28%;
+    width: 9vw;
+    height: 11vw;
+
+}
+
+#workBlob{
+    position: absolute;
+    bottom: 45vw;
+    right: -1vw;
+
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+
+    font-family: "Sarala Bold";
+    font-size: 1.35vw;
+    background-color: #87C1FB;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 2px;
+    padding: 2% 0% 0% 0.5%;
+
+    border-radius: 13% 0% 0% 100% / 1% 30% 52% 99%;
+    width: 13vw;
+    height: 13vw;
+}
+
+#featureBlob{
+    position: absolute;
+    bottom: 48vw;
+    right: 22vw;
+
+    display: flex;
+    justify-content: center; 
+    align-items: flex-end;   
+
+    font-family: "Sarala Bold";
+    font-size: 1.35vw;
+    background-color: #87C1FB;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 2px;
+    padding-bottom: 3%;
+
+    border-radius: 33% 51% 18% 70% / 46% 37% 47% 42%;
+    width: 15vw;
+    height: 13vw;
+}
+
+#blobOne{
+    position: absolute;
+    bottom: 47vw;
+    right: 17vw;
+    width: 1.5vw;
+    height: 1.5vw;
+
+    background-color: #6db3f9;
+    border-radius: 65% 34% 24% 76% / 38% 75% 25% 62%;
+}
+
+#blobTwo{
+    position: absolute;
+    bottom: 37vw;
+    right: 7vw;
+    width: 1.5vw;
+    height: 1.75vw;
+
+    background-color: #6db3f9;
+    border-radius: 50% / 50%;
+}
+
+#homeBlob:hover,
+#aboutBlob:hover,
+#workBlob:hover,
+#featureBlob:hover{
+    transform: scale(1.05);
+}
+
+@keyframes morph{
+    0% {
+      border-radius: 30% 70% 20% 80% / 40% 60% 30% 50%;
+    }
+    50% {
+      border-radius: 60% 30% 70% 20% / 60% 40% 70% 30%;
+    }
+    100% {
+      border-radius: 30% 70% 20% 80% / 40% 60% 30% 50%;
+    }
+  }
+  
+
+#homeBlob{
+    animation: morph 3s ease-in-out infinite;
+}
+  
+#aboutBlob{
+    animation: morph 4s ease-in-out infinite;
+}
+  
+#workBlob{
+    animation: morph 5.5s ease-in-out infinite;
+}
+  
+#featureBlob{
+    animation: morph 5s ease-in-out infinite;
+}
+  
+
+@keyframes colorGlow{
+    0%, 100%{
+      background-color: #87C1FB;
+      box-shadow: 0 0 10px rgba(135, 193, 251, 0.4);
+    }
+
+    50%{
+      background-color: #8fcbfb;
+      box-shadow: 0 0 18px rgba(160, 212, 255, 0.6);
+    }
+}
+
+#homeBlob,
+#aboutBlob,
+#workBlob,
+#featureBlob{
+  animation: 
+    morph 12s ease-in-out infinite,
+    colorGlow 10s ease-in-out infinite;
+  transition: transform 0.3s;
+}
+

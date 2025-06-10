@@ -1,0 +1,203 @@
+/* ----------  LANDING SECTION TWO: ABOUT US  ---------- */
+
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.landingSectionTwo{
+    position: relative;
+    width: 100vw;
+}
+
+#aboutBlobUnit{
+    position: absolute;
+    left: -4vw;
+    top: 8vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #529BE6;
+    text-decoration: none;
+    text-align: center;
+
+    width: 45vw;
+    height: 40vw;
+    border-radius: 33% 63% 24% 68% / 67% 63% 19% 28%;
+}
+
+#aboutBlobUnit h2{
+    color: #FFCC00;
+    margin: 0;
+}
+
+#aboutBlobUnit p{
+    font-family: "Sarala Regular";
+    color: white;
+    font-size: 1.3vw;
+    margin: 0;
+    padding: 5% 9% 0% 15%;
+}
+
+.aboutImages{
+    position: relative;
+    top: 15vw;
+}
+
+#aboutImgOne,
+#aboutImgTwo,
+#aboutImgThree {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: floatBlob 10s infinite ease-in-out alternate,
+               blobGlow 3s infinite alternate ease-in-out;
+
+    box-shadow: 0 0 5px rgba(143, 199, 255, 0.5);
+}
+
+#aboutImgOne{
+    position: absolute;
+    background-color: #8FC7FF;
+    width: 20vw;
+    height: 26vw;
+    right: 35vw;
+    bottom: -14.5vw;
+    border-radius: 68% 25% 67% 22% / 31% 47% 42% 69%;
+    transform: rotate(80deg);
+  
+    animation-delay: 0s, 0s; 
+    --initial-rotation: 80deg;
+}
+
+#aboutImgTwo{
+    position: absolute;
+    background-color: #8FC7FF;
+    width: 25vw;
+    height: 20vw;
+    bottom: -18vw;
+    right: -5vw;
+    border-radius: 68% 32% 67% 33% / 82% 43% 57% 18%;
+   
+    animation-delay: 1.5s, 0.75s; 
+    --initial-rotation: 0deg;
+}
+
+#aboutImgThree{
+    position: absolute;
+    background-color: #8FC7FF;
+    width: 27.99vw;
+    height: 17.04vw;
+    right: 25vw;
+    bottom: -35vw;
+    border-radius: 62% 38% 73% 27% / 46% 43% 54% 48%;
+    transform: rotate(-25deg);
+  
+    animation-delay: 3s, 1.5s; 
+    --initial-rotation: -25deg;
+}
+
+.aboutImages h3{
+    font-family: "Sarala Regular";
+    color: white;
+    font-size: 2.4vw;;
+}
+
+#aboutImgOne h3{
+    transform: rotate(-80deg);
+}
+
+#aboutImgThree h3{
+    transform: rotate(25deg);
+}
+
+.aboutDecorBubbles{
+    position: relative;
+}
+
+#aboutDecorOne{
+    position: absolute;
+    width: 2.75vw;
+    right: 26vw;
+    top: 8vw;
+}
+
+#aboutDecorTwo{
+    position: absolute;
+    width: 9vw;
+    right: -4vw;
+    top: 4vw;
+}
+
+#aboutDecorThree{
+    position: absolute;
+    width: 5vw;
+    right: 50vw;
+    top: 28vw;
+}
+
+#aboutDecorFour{
+    position: absolute;
+    width: 3.5vw;
+    right: 25vw;
+    top: 25vw;
+}
+
+#aboutDecorFive{
+    position: absolute;
+    width: 5vw;
+    right: 20vw;
+    top: 45vw;
+}
+
+#aboutDecorSix{
+    position: absolute;
+    width: 11vw;
+    right: -5vw;
+    top: 40vw;
+}
+
+#aboutDecorSeven{
+    position: absolute;
+    width: 10vw;
+    left: -5vw;
+    top: 45vw;
+}
+
+
+@keyframes floatBlob{
+    0% {
+        transform: translate(0, 0) rotate(var(--initial-rotation, 0deg));
+    }
+    25% {
+        transform: translate(5px, 10px) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+    }
+    50% {
+        transform: translate(-5px, 5px) rotate(calc(var(--initial-rotation, 0deg) - 3deg));
+    }
+    75% {
+        transform: translate(10px, -5px) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+    }
+    100% {
+        transform: translate(0, 0) rotate(var(--initial-rotation, 0deg));
+    }
+}
+
+@keyframes blobGlow{
+    0% {
+        box-shadow: 0 0 5px rgba(143, 199, 255, 0.5); 
+    }
+    50% {
+        box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.8), 
+                    0 0 20px 5px rgba(143, 199, 255, 0.7); 
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(143, 199, 255, 0.5); 
+    }
+}

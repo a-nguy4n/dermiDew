@@ -1,0 +1,205 @@
+@font-face{
+    font-family: "Slackside One";
+    src: url("/static/assets/fonts/SlacksideOne-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: "Sarala Regular";
+    src: url("/static/assets/fonts/Sarala-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: "Sarala Bold";
+    src: url("/static/assets/fonts/Sarala-Bold.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.landSectionFour{
+    width:100vw;
+}
+
+#featureSection h1{
+    font-family: "Slackside One";
+    font-size: 4vw;
+    color: #519CE8;
+    margin-left: 2%;
+}
+
+#featureSection h2{
+    font-family: "Sarala Regular";
+    letter-spacing: 2px;
+    color: white;
+}
+
+#featureSection span{
+    color: #FFCC00;
+}
+
+#featureOne{
+    background-color: #95CAFF;
+    border-radius: 50%;
+    width: 16vw; 
+    height: 16vw; 
+    font-size: 1.65vw;
+    line-height: 1.5; 
+    
+    display: flex; 
+    position: relative;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    top: 1vw;
+    left: 5vw;
+    z-index: 1;
+}
+
+#featureTwo{
+    background-color: #72ADE8;
+    border-radius: 50%;
+    width: 15vw; 
+    height: 15vw; 
+    font-size: 1.65vw;
+    line-height: 1.5; 
+    
+    display: flex; 
+    position: relative;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    top: -17vw;
+    left: 70vw;    
+    z-index: 1;
+}
+
+#featureThree{
+    background-color: #8FC7FF;
+    border-radius: 50%;
+    width: 12vw; 
+    height: 12vw; 
+    font-size: 1.25vw;
+    line-height: 1.5; 
+
+    display: flex; 
+    position: relative;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    top: -35vw;
+    left: 38vw;
+    z-index: 1;
+}
+
+#featureFour{
+    background-color: #88C3FF;
+    border-radius: 50%;
+    width: 15.5vw; 
+    height: 15.5vw; 
+    font-size: 1.5vw;
+    line-height: 1.5; 
+
+    display: flex; 
+    position: relative;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    bottom: 25vw;
+    right: -65vw;
+    z-index: 1;
+}
+
+#featureFive{
+    background-color: #5BA5EF;
+    border-radius: 50%;
+    width: 15.5vw; 
+    height: 15.5vw; 
+    font-size: 1.5vw;
+    line-height: 1.5; 
+
+    display: flex; 
+    position: relative;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    bottom: 40vw;
+    right: -27vw;
+    z-index: 1;
+}
+
+.featureDecor{
+    position: absolute;
+}
+
+#featDecorSun{
+    position: relative;
+    width: 10vw;
+    bottom: 75vw;
+    left: 53vw;
+}
+
+#featDecorOne{
+    position: relative;
+    width: 13vw;
+    transform: rotate(90deg);
+    bottom: 55vw;
+    left: -2vw;
+}
+
+#featDecorTwo{
+    position: relative;
+    width: 10vw;
+    bottom: 55vw;
+    left: 30vw;
+}
+
+#featDecorThree{
+    position: relative;
+    width: 10vw;
+    bottom: 75vw;
+    left: 55vw;
+}
+
+#featDecorFour{
+    position: relative;
+    width: 3vw;
+    bottom: 94vw;
+    left: 22vw;
+}
+
+#featDecorFive{
+    position: relative;
+    width: 5vw; 
+    bottom: 77vw;
+    right: 17vw;
+}
+
+@keyframes pulseGlow{
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0.5vw rgba(75, 179, 249, 0.527);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 1.5vw rgba(75, 179, 249, 0.729);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0.5vw rgba(255, 255, 255, 0.4);
+    }
+}
+
+
+#featureOne,
+#featureFive{
+    animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+#featureTwo,
+#featureThree,
+#featureFour{
+    animation: pulseGlow 2.3s infinite ease-in-out;
+}
