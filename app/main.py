@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query, Request, status, Form, Depends, Body
+from fastapi import FastAPI, HTTPException, Query, Request, status, Form, Depends, Body, APIRouter
 from fastapi.responses import Response      
 from fastapi.responses import RedirectResponse    
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
@@ -12,8 +12,11 @@ import sys
 import os, secrets, uvicorn
 from dotenv import load_dotenv
 from urllib.request import urlopen
+from openai import OpenAI
 
 load_dotenv()
+
+client = OpenAI(api_key='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')
 
 DB_HOST = os.getenv("MYSQL_HOST")
 DB_USER = os.getenv("MYSQL_USER")
@@ -385,6 +388,32 @@ def get_html() -> HTMLResponse:
 def get_html() -> HTMLResponse:
     with open("./app/static/pages/help.html") as html:
         return HTMLResponse(content=html.read())
+    
+class AnalysisRequest(BaseModel):
+    query: str
+    image: str = None
+    imageUrl: str = None
+
+@app.post("/analysis")
+async def get_analysis(request: AnalysisRequest):
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a skin analyzer."},
+                {"role": "user",
+                "content": [
+                    {"type": "text", "text": request.query},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{request.image}"}}
+                ]}
+            ]
+        )
+        analysis_results = completion.choices[0].message.content
+
+        return {"response": analysis_results}
+
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run(app="app.main:app", host="0.0.0.0", port=6543, reload=True)
