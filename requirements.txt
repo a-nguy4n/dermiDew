@@ -7,3 +7,4 @@ python-dotenv
 httpx
 requests
 python-multipart
+openai

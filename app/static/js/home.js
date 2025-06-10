@@ -620,6 +620,7 @@ window.addEventListener('click', function (e){
 });
 
 // --------------  NEW SKIN ANALYSIS Bubble -------------- 
+
 document.getElementById('skinAnalysisBubble').addEventListener('click', async () => {
   const queryText = "Describe the image";
   const imageUrl = "https://picsum.photos/id/237/200/300";
