@@ -657,21 +657,67 @@ window.addEventListener('click', function (e){
 // --------------  NEW SKIN ANALYSIS Bubble -------------- 
 
 document.getElementById('skinAnalysisBubble').addEventListener('click', async () => {
-  const queryText = "Describe the image";
-  const imageUrl = "https://picsum.photos/id/237/200/300";
-  //const imageUrl = "http://192.168.1.60/photo";
+  // Display the initial analysis window with loading states
+  showWindow(`
+    <section id="analysisContent">
+      <h2>My Skincare Analysis</h2>
+      
+      <div class="analysis-container">
+        <div class="scan-overview">
+          <h3>Latest Scan Overview</h3>
+          <p class="scan-date">last scan was: Loading...</p>
+          <p><strong>Type of Skin:</strong> <span id="skinType">Loading...</span></p>
+          <p><strong>Hydration Level:</strong> <span id="hydrationLevel">Loading...</span></p>
+          <p><strong>Skin Diagnosis:</strong> <span id="skinDiagnosis">Loading...</span></p>
+            <button id="newAnalysisButton">+ get new analysis</button>
+        </div>
+  
+        <div class="vertical-divider"></div>
+
+        <div class="routine-recommendation">
+          <h3>Routine Recommendation</h3>
+          <div id="routineContent">Loading recommendations...</div>
+        </div>
+      </div>
+    </section>
+  `, 'routineWindow');
+
+  // Logic to fetch and display analysis results
+  const imageUrl = "https://plus.unsplash.com/premium_photo-1683140815244-7441fd002195?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWNuZXxlbnwwfHwwfHx8MA%3D%3D"; // Replace with your actual image source
+  // const imageUrl = "http://192.168.1.60/photo"; // Example for local camera feed if applicable
 
   try {
     const imageResponse = await fetch(imageUrl);
     if (!imageResponse.ok) {
       throw new Error(`Failed to fetch image: ${imageResponse.status}`);
-    }else{
-      console.log("Fetched Image");
+    } else {
+      console.log("Fetched Image for analysis.");
     }
     
     const imageBlob = await imageResponse.blob();
     const imageBase64 = await blobToBase64(imageBlob);
     
+    // UPDATED query to ask for all required information and request JSON format
+    const queryText = `Analyze the skin in the image and provide the following information in a JSON format:
+{
+  "description": "A brief description of the skin in the image.",
+  "skinType": "e.g., Oily, Dry, Combination, Normal, Sensitive, Acne-prone",
+  "hydrationLevel": "e.g., High, Medium, Low, Dehydrated",
+  "skinDiagnosis": "e.g., Clear, Mild acne, Redness, Fine lines, Sun damage, Hyperpigmentation",
+  "routineRecommendation": {
+    "morning": [
+      "Step 1: Product type (e.g., Cleanser)",
+      "Step 2: Product type (e.g., Toner)",
+      "..."
+    ],
+    "evening": [
+      "Step 1: Product type (e.g., Cleanser)",
+      "Step 2: Product type (e.g., Treatment)",
+      "..."
+    ]
+  }
+}`;
+
     const response = await fetch('/analysis', {
       method: 'POST',
       headers: {
@@ -680,7 +726,7 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
       body: JSON.stringify({ 
         query: queryText,
         image: imageBase64,
-        imageUrl: imageUrl
+        imageUrl: imageUrl // Sending imageUrl for potential backend logging or processing
       })
     });
 
@@ -689,10 +735,60 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
     }
 
     const data = await response.json();
-    console.log(data);
+    console.log("Raw Analysis Data from Backend:", data);
+
+    // Extract the string from the 'response' key
+    let rawJsonResponseString = data.response; 
+
+    // Remove the markdown code block delimiters
+    // It looks for ```json (or just ```) at the start and ``` at the end.
+    rawJsonResponseString = rawJsonResponseString.replace(/^```json\s*|```$/g, '').trim();
+
+    // Now, parse the cleaned JSON string
+    const analysisResults = JSON.parse(rawJsonResponseString); 
+
+    // Populate the analysis results into the displayed window
+    document.querySelector('.scan-date').textContent = `last scan was: ${new Date().toLocaleDateString()}`;
+    document.getElementById('skinType').textContent = analysisResults.skinType || 'N/A';
+    document.getElementById('hydrationLevel').textContent = analysisResults.hydrationLevel || 'N/A';
+    document.getElementById('skinDiagnosis').textContent = analysisResults.skinDiagnosis || 'N/A';
     
+    let routineHtml = '';
+    if (analysisResults.routineRecommendation) {
+        if (analysisResults.routineRecommendation.morning && analysisResults.routineRecommendation.morning.length > 0) {
+            routineHtml += '<h4>Morning Routine:</h4><ul>';
+            analysisResults.routineRecommendation.morning.forEach(item => {
+                routineHtml += `<li>${item}</li>`;
+            });
+            routineHtml += '</ul>';
+        }
+        if (analysisResults.routineRecommendation.evening && analysisResults.routineRecommendation.evening.length > 0) {
+            routineHtml += '<h4>Evening Routine:</h4><ul>';
+            analysisResults.routineRecommendation.evening.forEach(item => {
+                routineHtml += `<li>${item}</li>`;
+            });
+            routineHtml += '</ul>';
+        }
+    } else {
+        routineHtml = 'No specific recommendations.';
+    }
+    document.getElementById('routineContent').innerHTML = routineHtml;
+
+
+    // Re-attach event listener for 'get new analysis' button if it's dynamic
+    document.getElementById('newAnalysisButton').addEventListener('click', () => {
+      // You can call the whole skin analysis process again or specific parts
+      document.getElementById('skinAnalysisBubble').click(); // Simulates clicking the main bubble again
+    });
+
   } catch (error) {
     console.error('Error during skin analysis:', error);
+    // Update the UI to show an error message
+    document.querySelector('.scan-date').textContent = 'last scan was: Error';
+    document.getElementById('skinType').textContent = 'Error';
+    document.getElementById('hydrationLevel').textContent = 'Error';
+    document.getElementById('skinDiagnosis').textContent = 'Error';
+    document.getElementById('routineContent').innerHTML = 'Failed to get analysis. Please try again.';
   }
 });
 

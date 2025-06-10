@@ -12,6 +12,7 @@ import sys
 import os, secrets, uvicorn
 from dotenv import load_dotenv
 from urllib.request import urlopen
+from pathlib import Path
 from openai import OpenAI
 
 load_dotenv()
@@ -245,7 +246,7 @@ app.mount("/static", StaticFiles(directory="./app/static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-  with open("./app/about.html") as html:
+  with open("./app/index.html") as html:
     return HTMLResponse(content=html.read())
 
 @app.get("/home", response_class=HTMLResponse)
@@ -271,15 +272,10 @@ async def home_page(request: Request):
     home_html = home_html.replace("User's Name Here", full_name)
 
     return HTMLResponse(content=home_html)
-
-@app.get("/about", response_class=HTMLResponse)
-def get_html() -> HTMLResponse:
-    with open("./app/about.html") as html:
-        return HTMLResponse(content=html.read())
     
 @app.get("/landing", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-    with open("./app/landing.html") as html:
+    with open("./app/index.html") as html:
         return HTMLResponse(content=html.read())
     
 @app.get("/profile", response_class=HTMLResponse)
@@ -501,9 +497,10 @@ def get_html() -> HTMLResponse:
     with open("./app/static/pages/exploreproducts.html") as html:
         return HTMLResponse(content=html.read())
     
-@app.get("/about", response_class=HTMLResponse)
+
+@app.get("/aboutus", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
-    with open("./app/static/pages/about.html") as html:
+    with open("./app/static/pages/landingSections/about.html") as html:
         return HTMLResponse(content=html.read())
     
 @app.get("/help", response_class=HTMLResponse)
