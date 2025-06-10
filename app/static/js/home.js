@@ -619,3 +619,55 @@ window.addEventListener('click', function (e){
   }
 });
 
+// --------------  NEW SKIN ANALYSIS Bubble -------------- 
+document.getElementById('skinAnalysisBubble').addEventListener('click', async () => {
+  const queryText = "Describe the image";
+  const imageUrl = "https://picsum.photos/id/237/200/300";
+  //const imageUrl = "http://192.168.1.60/photo";
+
+  try {
+    const imageResponse = await fetch(imageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.status}`);
+    }else{
+      console.log("Fetched Image");
+    }
+    
+    const imageBlob = await imageResponse.blob();
+    const imageBase64 = await blobToBase64(imageBlob);
+    
+    const response = await fetch('/analysis', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        query: queryText,
+        image: imageBase64,
+        imageUrl: imageUrl
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    
+  } catch (error) {
+    console.error('Error during skin analysis:', error);
+  }
+});
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
