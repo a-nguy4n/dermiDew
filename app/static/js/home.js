@@ -90,9 +90,23 @@ window.addEventListener('load', async () => {
 });
 
 // -------------- ROUTINE WINDOW -------------- 
-document.getElementById('currRoutineBubble').addEventListener('click', () => {
-  showWindow(`
-    <section id="currRoutineContent">
+document.getElementById('currRoutineBubble').addEventListener('click', async () => {
+  // 1. Fetch existing routine from the server
+  let routine = {};
+  try {
+    const res = await fetch('/routine', { credentials: 'include' });
+    if (res.ok) {
+      routine = await res.json();
+    } else {
+      console.error('Failed to load routine:', res.statusText);
+    }
+  } catch (err) {
+    console.error('Error fetching routine:', err);
+  }
+
+  // 2. Show the popup window
+  showWindow(
+    `<section id="currRoutineContent">
       <div class="routineHeader"> 
         <h2>My Current Routine</h2>
         <div id="editRoutineButton">
@@ -100,109 +114,116 @@ document.getElementById('currRoutineBubble').addEventListener('click', () => {
           <img src="/static/assets/images/editIcon.png" alt="Edit Icon">
         </div>
       </div>
-
       <div class="routineBlock">
         <section id="morningRoutine">
           <div id="morningHeader">
             <h3>Morning</h3>
             <img id="morningImg" src="/static/assets/images/sunIcon.png" alt="Sun Icon">
-           </div>
-           
-           <ol id="morningList">
+          </div>
+          <ol id="morningList">
             <li>
               <span class="stepLabel">Cleanser:</span>
               <input type="text" class="stepInput" placeholder="add your cleanser here" disabled>
             </li>
-              
             <li>
               <span class="stepLabel">Toner & Essence:</span>
               <input type="text" class="stepInput" placeholder="add your toner & essence here" disabled>
             </li>
-              
             <li>
               <span class="stepLabel">Moisturizer:</span>
               <input type="text" class="stepInput" placeholder="add your moisturizer here" disabled>
             </li>
-              
             <li>
               <span class="stepLabel">Sunscreen:</span>
               <input type="text" class="stepInput" placeholder="add your sunscreen here" disabled>
             </li>
           </ol>
         </section>
-
         <section id="nightRoutine">
           <div id="nightHeader">
             <h3>Night</h3>
             <img id="nightImg" src="/static/assets/images/moonIcon.png" alt="Moon Icon">
           </div>
-            
           <ol id="nightList">
             <li>
               <span class="stepLabel">Cleanser:</span>
               <input type="text" class="stepInput" placeholder="add your cleanser here" disabled>
             </li>
-              
             <li>
               <span class="stepLabel">Toner & Essence:</span>
               <input type="text" class="stepInput" placeholder="add your toner & essence here" disabled>
             </li>
-
             <li>
               <span class="stepLabel">Serums & Treatments:</span>
               <input type="text" class="stepInput" placeholder="add your serums & treatments here" disabled>
             </li>
-              
             <li>
               <span class="stepLabel">Moisturizer:</span>
               <input type="text" class="stepInput" placeholder="add your moisturizer here" disabled>
-             </li>
+            </li>
           </ol>
         </section>
-
-        <button id="saveButton"> save </button>
-
+        <button id="saveButton" style="display: none;">Save</button>
       </div>
-    </section>
-  `, 
-    'routineWindow');
+    </section>`,
+    'routineWindow'
+  );
 
-    document.getElementById('editRoutineButton').addEventListener('click', () => {
-      document.querySelectorAll('.stepInput').forEach((input) => {
-        input.classList.add('edit-mode');
+  // 3. Populate inputs with fetched data
+  const morningInputs = document.querySelectorAll('#morningList .stepInput');
+  const nightInputs   = document.querySelectorAll('#nightList .stepInput');
+  morningInputs[0].value = routine.morning_cleanser   || '';
+  morningInputs[1].value = routine.morning_toner      || '';
+  morningInputs[2].value = routine.morning_moisturizer|| '';
+  morningInputs[3].value = routine.morning_sunscreen  || '';
+  nightInputs[0].value   = routine.night_cleanser     || '';
+  nightInputs[1].value   = routine.night_toner        || '';
+  nightInputs[2].value   = routine.night_serums       || '';
+  nightInputs[3].value   = routine.night_moisturizer  || '';
+
+  // 4. Wire up Edit button
+  const editBtn = document.getElementById('editRoutineButton');
+  const saveBtn = document.getElementById('saveButton');
+  editBtn.addEventListener('click', () => {
+    morningInputs.forEach(i => { i.disabled = false; i.classList.add('edit-mode'); });
+    nightInputs.forEach(i => { i.disabled = false; i.classList.add('edit-mode'); });
+    saveBtn.style.display = 'inline-block';
+  });
+
+  // 5. Wire up Save button
+  saveBtn.addEventListener('click', async () => {
+    // Collect payload
+    const payload = {
+      morning_cleanser:    morningInputs[0].value,
+      morning_toner:       morningInputs[1].value,
+      morning_moisturizer: morningInputs[2].value,
+      morning_sunscreen:   morningInputs[3].value,
+      night_cleanser:      nightInputs[0].value,
+      night_toner:         nightInputs[1].value,
+      night_serums:        nightInputs[2].value,
+      night_moisturizer:   nightInputs[3].value,
+    };
+
+    // Send to backend
+    try {
+      const res = await fetch('/routine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
       });
-    });
+      if (!res.ok) {
+        console.error('Failed to save routine:', await res.text());
+      }
+    } catch (err) {
+      console.error('Error saving routine:', err);
+    }
 
-    setTimeout(() => {
-      const editBtn = document.getElementById('editRoutineButton');
-      const saveBtn = document.getElementById('saveButton');
-      const routineInputs = document.querySelectorAll('.stepInput');
-
-      let isEditing = false; 
-
-      editBtn.addEventListener('click', () => {
-        isEditing = true; 
-
-        routineInputs.forEach(input => {
-          input.disabled = false;
-          input.classList.add('edit-mode');
-        });
-
-        saveBtn.style.display = 'flex';
-      });
-
-      saveBtn.addEventListener('click', () => {
-        isEditing = false;
-    
-        routineInputs.forEach(input => {
-          input.disabled = true;
-          input.classList.remove('edit-mode');
-        });
-
-        saveBtn.style.display = 'none';
-      
-      });
-    }, 0);
+    // Disable editing again
+    morningInputs.forEach(i => { i.disabled = true; i.classList.remove('edit-mode'); });
+    nightInputs.forEach(i => { i.disabled = true; i.classList.remove('edit-mode'); });
+    saveBtn.style.display = 'none';
+  });
 });
 
 // --------------  GOALS WINDOW -------------- 

@@ -121,6 +121,22 @@ async def setup_database(initial_users: dict = None):
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
+        """,
+        "current_routine": """
+            CREATE TABLE current_routine (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL UNIQUE,
+                morning_cleanser TEXT,
+                morning_toner TEXT,
+                morning_moisturizer TEXT,
+                morning_sunscreen TEXT,
+                night_cleanser TEXT,
+                night_toner TEXT,
+                night_serums TEXT,
+                night_moisturizer TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
         """
     }
 
@@ -421,3 +437,80 @@ def get_login_metrics(user_id: int) -> dict:
             conn.close()
         print(f"[get_login_metrics] Database error: {err}")
         return {"total_logins": 0, "current_streak": 0, "last_login_date": None}
+
+async def get_current_routine(user_id: int) -> Optional[dict]:
+    """
+    Fetch the single current_routine row for this user (or None).
+    """
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    cur.execute(
+        """
+        SELECT morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+               night_cleanser, night_toner, night_serums, night_moisturizer
+          FROM current_routine
+         WHERE user_id = %s
+        """,
+        (user_id,)
+    )
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    return row
+
+async def upsert_current_routine(
+    user_id: int,
+    morning_cleanser: str,
+    morning_toner: str,
+    morning_moisturizer: str,
+    morning_sunscreen: str,
+    night_cleanser: str,
+    night_toner: str,
+    night_serums: str,
+    night_moisturizer: str
+) -> None:
+    """
+    Inserts a new row if none exists for this user, otherwise updates the existing one.
+    """
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Check if a row already exists
+    cur.execute("SELECT 1 FROM current_routine WHERE user_id = %s", (user_id,))
+    exists = cur.fetchone() is not None
+
+    if exists:
+        # update the existing row
+        cur.execute("""
+            UPDATE current_routine
+               SET morning_cleanser  = %s,
+                   morning_toner     = %s,
+                   morning_moisturizer = %s,
+                   morning_sunscreen = %s,
+                   night_cleanser    = %s,
+                   night_toner       = %s,
+                   night_serums      = %s,
+                   night_moisturizer = %s
+             WHERE user_id = %s
+        """, (
+            morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+            night_cleanser, night_toner, night_serums, night_moisturizer,
+            user_id
+        ))
+    else:
+        # insert a brand-new row
+        cur.execute("""
+            INSERT INTO current_routine
+              (user_id,
+               morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+               night_cleanser, night_toner, night_serums, night_moisturizer)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            user_id,
+            morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+            night_cleanser, night_toner, night_serums, night_moisturizer
+        ))
+
+    conn.commit()
+    cur.close()
+    conn.close()

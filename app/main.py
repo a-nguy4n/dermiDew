@@ -35,7 +35,9 @@ from app.database import (
     delete_session,
     create_user,
     record_login,
-    get_login_metrics
+    get_login_metrics,
+    get_current_routine,
+    upsert_current_routine
 )
 
 INIT_USERS = {"alice@gmail.com": {"password": "pass123", "first_name": "Alice", "last_name": "Smith"}, "bob@gmail.com": {"password": "pass456", "first_name": "Bob", "last_name": "Jones"}}
@@ -373,6 +375,91 @@ async def remove_goal(goal_id: int, request: Request):
     
     await delete_goal(goal_id, session["user_id"])
     return {"message": "Goal deleted"}
+
+@app.get("/routine", response_class=JSONResponse)
+async def load_routine(request: Request):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+    data = await get_current_routine(session["user_id"]) or {}
+    return data
+
+@app.post("/routine")
+async def save_routine(request: Request, data: dict = Body(...)):
+    session_id = request.cookies.get("sessionId")
+    session = await get_session(session_id)
+    if not session:
+        return JSONResponse(status_code=403, content={"error": "Not logged in"})
+    await upsert_current_routine(
+        session["user_id"],
+        data.get("morning_cleanser",""),
+        data.get("morning_toner",""),
+        data.get("morning_moisturizer",""),
+        data.get("morning_sunscreen",""),
+        data.get("night_cleanser",""),
+        data.get("night_toner",""),
+        data.get("night_serums",""),
+        data.get("night_moisturizer","")
+    )
+    return {"message": "Routine saved"}
+
+async def upsert_current_routine(
+    user_id: int,
+    morning_cleanser: str,
+    morning_toner: str,
+    morning_moisturizer: str,
+    morning_sunscreen: str,
+    night_cleanser: str,
+    night_toner: str,
+    night_serums: str,
+    night_moisturizer: str
+) -> None:
+    """
+    Inserts a new row if none exists for this user, otherwise updates the existing one.
+    """
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Check if a row already exists
+    cur.execute("SELECT 1 FROM current_routine WHERE user_id = %s", (user_id,))
+    exists = cur.fetchone() is not None
+
+    if exists:
+        # update the existing row
+        cur.execute("""
+            UPDATE current_routine
+               SET morning_cleanser  = %s,
+                   morning_toner     = %s,
+                   morning_moisturizer = %s,
+                   morning_sunscreen = %s,
+                   night_cleanser    = %s,
+                   night_toner       = %s,
+                   night_serums      = %s,
+                   night_moisturizer = %s
+             WHERE user_id = %s
+        """, (
+            morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+            night_cleanser, night_toner, night_serums, night_moisturizer,
+            user_id
+        ))
+    else:
+        # insert a brand-new row
+        cur.execute("""
+            INSERT INTO current_routine
+              (user_id,
+               morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+               night_cleanser, night_toner, night_serums, night_moisturizer)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            user_id,
+            morning_cleanser, morning_toner, morning_moisturizer, morning_sunscreen,
+            night_cleanser, night_toner, night_serums, night_moisturizer
+        ))
+
+    conn.commit()
+    cur.close()
+    conn.close()
 
 @app.get("/exploreproducts", response_class=HTMLResponse)
 def get_html() -> HTMLResponse:
