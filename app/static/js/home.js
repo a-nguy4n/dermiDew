@@ -682,9 +682,10 @@ document.getElementById('skinAnalysisBubble').addEventListener('click', async ()
   `, 'routineWindow');
 
   // logic to fetch and display analysis results
-  const imageUrl = "https://plus.unsplash.com/premium_photo-1683140815244-7441fd002195?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWNuZXxlbnwwfHwwfHx8MA%3D%3D"; // Replace with your actual image source
+  // const imageUrl = "https://plus.unsplash.com/premium_photo-1683140815244-7441fd002195?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWNuZXxlbnwwfHwwfHx8MA%3D%3D"; // Replace with your actual image source
   // const imageUrl = "http://192.168.1.60/photo"; // Example for local camera feed if applicable
-
+  const imageUrl = "http://172.20.10.10/photo";
+  
   try {
     const imageResponse = await fetch(imageUrl);
     if (!imageResponse.ok) {

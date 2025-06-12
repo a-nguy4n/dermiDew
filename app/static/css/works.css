@@ -73,13 +73,14 @@
     padding: 1vw; 
 }
 
-.workCard p {
+.workCard p{
     font-family: "Sarala Regular";
     line-height: 1.5;
     color: white;
+    font-size: 1vw;
 }
 
-.workCard strong {
+.workCard strong{
     font-family: "Sarala Regular";
     line-height: 1.5;
     color: white;
